@@ -52,7 +52,7 @@ Each regridding event starts with a line such as
 > Regrid:t=0.000000,L1=3,Lf=3,gnum=2
 
 This indicates the time of the regrid, the coarsest level over which the
-heirarchy can change, the finest level of the new hierarchy, and the
+hierarchy can change, the finest level of the new hierarchy, and the
 number of bounding boxes.
 
 The second line is just a repetition of the first in a more

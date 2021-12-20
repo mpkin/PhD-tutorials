@@ -2,5 +2,7 @@ How to integrate over AMR levels in PAMR. Regrid scripts are written by-hand to 
 
 Run using
 
-  cat *.rtparam *.fparam > simple-pamr.param
-  mpirun -n $numcores simple-pamr simple-pamr.param
+```
+cat *.rtparam *.fparam > simple-pamr.param
+mpirun -n $numcores simple-pamr simple-pamr.param
+```

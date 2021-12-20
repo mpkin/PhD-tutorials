@@ -125,7 +125,7 @@ c     Begin main solver loop
       uold=u
       err = 0d0   
 
-c     boundary condition at p=0 (i.e. i=1)
+c     Boundary condition at p=0 (i.e. i=1)
       i=1
       do j=2,Nz-1
 
@@ -134,7 +134,7 @@ c     boundary condition at p=0 (i.e. i=1)
 
       end do
 
-c     boundary condition at p=pmax (i.e. i=Np)
+c     Boundary condition at p=pmax (i.e. i=Np)
       i=Np
       do j=1,Nz
 
@@ -143,7 +143,7 @@ c     boundary condition at p=pmax (i.e. i=Np)
 
       end do
       
-c     interior points (copied over from previous versions of the code)
+c     Interior points (copied over from previous versions of the code)
       do i=2,Np-1
       do j=2,Nz-1
 
@@ -156,7 +156,7 @@ c     interior points (copied over from previous versions of the code)
       end do 
       end do
 
-c     boundary condition at z=zmin (i.e. j=1)
+c     Boundary condition at z=zmin (i.e. j=1)
       j=1
       do i=1,Np
 
@@ -165,7 +165,7 @@ c     boundary condition at z=zmin (i.e. j=1)
 
       end do
 
-c     boundary condition at z=zmax (i.e. j=Nz)
+c     Boundary condition at z=zmax (i.e. j=Nz)
       j=Nz
       do i=1,Np
 
@@ -174,7 +174,7 @@ c     boundary condition at z=zmax (i.e. j=Nz)
 
       end do
       
-c     add up the errors (l2-norm)
+c     Add up the errors (l2-norm)
       do i=1,Np
       do j=1,Nz
        err = err + (uold(i,j)-u(i,j))**2.0d0
@@ -197,7 +197,7 @@ c     add up the errors (l2-norm)
 
       write(*,*)
 
-!     Compute the stepsize for outputting the data
+c     Compute the stepsize for outputting the data
       if ( level .eq. 0 ) then
         stepsize = 1
       elseif ( level .eq. 1 ) then
@@ -208,7 +208,7 @@ c     add up the errors (l2-norm)
         stepsize = 8
       endif
 
-!     Write to file for the solution & source in x-y coords
+c     Write to file for the solution & source in x-y coords
       unum = 110
       open(unit=unum, file='solution_data', status='replace',
      &     action='write',iostat=stat)
@@ -234,10 +234,10 @@ c     add up the errors (l2-norm)
 
 c-----------------------------------------------------------------------
 c
-c     subroutine sol_checker: Assuming a specific potential, this
-c     routine computes and outputs the exact solution and absolute error 
-c     by comparing it to the numerical solution computed in the main
-c     program. The potential is assumed to be
+c     sol_checker: Assuming a specific potential, this routine computes
+c     and outputs the exact solution and absolute error by comparing it
+c     to the numerical solution computed in the main program. The
+c     potential is assumed to be
 c
 c                              Q               / -1  p^2+z^2 \
 c            f(p,z) = -------------------- exp|  --- -------  |
@@ -249,10 +249,7 @@ c                       1     Q        / sqrt(p^2+z^2) \
 c            u(p,z) = ---- ------- erf| --------------- |
 c                     4*pi p^2+z^2     \ sigma*sqrt(2) /
 c           
-c     which can be confirmed by direct substitution. This example is
-c     taken from
-c
-c!  https://en.wikipedia.org/wiki/Poisson's_equation#Potential_of_a_Gaussian_charge_density
+c     which can be confirmed by direct substitution.
 c
 c-----------------------------------------------------------------------
 
@@ -285,7 +282,7 @@ c     Fill the coordinate arrays
       enddo
 
 
-!c    Write the file for the exact solution & abserr
+c     Write the file for the exact solution & abserr
       unum = 112
       open(unit=unum, file='exactsol_data', status='replace',
      &     action='write',iostat=stat)
@@ -294,7 +291,7 @@ c     Fill the coordinate arrays
       do i=1,Np,stepsize
       do j=1,Nz,stepsize
         if (( p(i) .EQ. 0d0 ) .AND. ( z(j) .EQ. 0d0 )) then
-          exact=-0.634936358   ! determined graphically (see Maple file)
+          exact=-0.634936358   ! determined graphically
         else
         exact=-(1.0/(4.0*pi))*(Q/sqrt(p(i)**2.0+z(j)**2.0))
      &        *erf(sqrt(p(i)**2.0+z(j)**2.0)/(sigma*sqrt(2.0)))

@@ -75,9 +75,9 @@ printf "[$author_short$year-$id_short]\n$title\n$author ($year)\n$url\n$doi" | x
 if [ $? -eq 0 ] 
 then  # it is installed
   printf "\n\e[1A\e[01;42m COPY TO CLIPBOARD SUCCESSFUL\e[0m\n"
-else  # you are not on remote machine
+else  # it is not installed
   printf "\e[1A\e[01;41m COPY TO CLIPBOARD FAILED \e[0m\n"
 fi
 
-#clean up
+# clean up
 rm /tmp/metadata.tmp

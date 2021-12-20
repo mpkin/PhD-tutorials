@@ -5,7 +5,7 @@ The code in this directory illustrates basic MPI functionality in Fortran and C.
 mpirun --oversubscribe -np <numcores> <executable>
 ```
 
-To see what the MPI compilters reduce to:
+To see what the MPI compilers reduce to:
 ```
 mpicc --show
 mpifort --show

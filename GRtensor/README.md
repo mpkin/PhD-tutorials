@@ -1,15 +1,15 @@
 # GRtensor
 
-Here I illustrate the basic uses of the basic uses of GRTensorII/III package for Maple.
+Here I illustrate the basic uses of the GRtensorII/III package for Maple.
 
 ### Initialization
 
-To easily invoke GRTensor, here is a useful `.mapleinit` file. Put it in your home directory
+To easily invoke GRtensor, here is a useful `.mapleinit` file (put it in your home directory)
 ```
 # FOR GRTENSOR II
 
 ###########################################################
-# Maple routine to initialize GRTensor. This file should
+# Maple routine to initialize GRtensor. This file should
 # be placed in the home directory.
 #
 #  Intialize via
@@ -25,12 +25,12 @@ grtw := proc ()
 
   readlib (grii):
   grtensor():
-# Path containing some default metric definitions:
+  # Path containing some default metric definitions:
   grOptionqloadPath  := "/usr/local/maple/grii/metrics";
-# Default save location for metrics you define:
+  # Default save location for metrics you define:
   grOptionMetricPath := "/your/path/here";
-# Some of Matt's custom metrics are located here:
-# grOptionMetricPath := "/d/bh0/home/matt/maple";
+  # Some of Matt's custom metrics are located here:
+  # grOptionMetricPath := "/d/bh0/home/matt/maple";
 
 end:
 
@@ -42,7 +42,7 @@ interface(rtablesize=100):
 # FOR GRTENSOR III:
 
 ###########################################################
-# Maple routine to initialize GRTensor. This file should
+# Maple routine to initialize GRtensor. This file should
 # be placed in the home directory.
 #
 #  Intialize via
@@ -58,7 +58,7 @@ grtw := proc ()
   with(grtensor);
 
   # Path containing some default metric definitions:
-  # grOptionqloadPath  := "/usr/local/maple/grii/metrics";
+  # grOptionqloadPath  := "/usr/local/maple/griii/metrics";
   grOptionqloadPath  := "/your/path/here/";
   # Default save location for metrics you define:
   grOptionMetricPath := "/your/path/here";
@@ -71,7 +71,7 @@ interface(rtablesize=100):
 ###########################################################
 ```
 
-To initialize GRTensor, run at the Maple prompt
+To initialize GRtensor, run at the Maple prompt
 ```
 grtw();
 ```
@@ -93,16 +93,15 @@ makeg(cyl); # let's give it the name 'cyl'
 ; # specify that there are no complex quantities
 5; # add a text description of the metric
 The Minkowski metric in cylindrical coordinates
-1; # save the metric in the folder specified by the 
-   # grOptionMetricPath variable (set in .mapleinit)
+1; # save the metric in the folder specified by the grOptionMetricPath variable (set in .mapleinit)
 ```
 
-To load your previously saved metrics
+Load your previously saved metrics
 ```
 grload(g,"path/to/metric/met.mpl");
 ```
 
-Some metrics are preinstalled (see `/usr/local/maple/grii/metrics` for a full list)
+Some metrics are preinstalled (see e.g. `/usr/local/maple/grii/metrics` for a full list)
 ```
 qload(schw); # for example, load the Schwarzchild metric
 ```

@@ -38,7 +38,7 @@ printf "\n\n\e[01;44m Making... \e[0m\n"
 make
 printf "\n\n\e[01;42m Running... \e[0m\n"
 
-# parameters of the smallest grid to be used in the convergence test
+# parameters to be used by the solver
 n=64              # n (number of grid points in p direction is n+1)    
 m=64              # m (number of grid points in z direction is m+1)
 pmax=4.5          # pmax (domain is (p,z) in [dp,pmax]x[-zmax,zmax])

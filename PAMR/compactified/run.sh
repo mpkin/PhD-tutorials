@@ -16,7 +16,7 @@ timestamp() {
   date +"%Y-%m-%d_%H-%M-%S"
 }
 
-# of this script fails
+# Check if compilation fails
 errorcheck() {
 	printf "\n\e[01;41m AN ERROR OCCURRED. EXITING  \e[0m\n\n"
 	exit 1
