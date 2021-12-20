@@ -1,0 +1,19 @@
+tag := "2d_"
+lambda := .5  
+in_file := "w2d_in_0.sdf" 
+out_file := "w2d_out_0.sdf" 
+ser := 0 
+fout := 1
+epsiter := 1.0e-6
+
+output := *-*/1
+level:=0
+iter :=2
+
+# Note that Nx=Nx0*2^(olevel)+1
+Np0 := 32
+Nz0 := 64
+pmin := 0
+pmax := 5
+zmin := -5
+zmax := 5

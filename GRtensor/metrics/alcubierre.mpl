@@ -1,0 +1,12 @@
+Ndim_   :=    4   :
+x2_     :=    x   :
+x3_     :=    y   :
+x4_     :=    z   :
+x1_     :=    t   :
+g12_    :=    -V(t)*f(sqrt(x^2+y^2+z^2))   :
+g21_    :=    -V(t)*f(sqrt(x^2+y^2+z^2))   :
+g22_    :=    1   :
+g33_    :=    1   :
+g44_    :=    1   :
+g11_    :=    V(t)^2*f(sqrt(x^2+y^2+z^2))^2-1  :
+Info_:=`The Alcubierre metric in cartesian coordinates`:

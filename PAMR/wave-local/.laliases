@@ -1,0 +1,6 @@
+a ns 'LS pamr-wave-myr-[0-9]*.pbs | dext | sed "s/-/ /g" | nth 4'
+a d 'rmqo; setenv SLP 3; qsub pamr-wave-myr-\!*.pbs; echo "Sleeping for $SLP secs."; sleep $SLP; qstat; qsort; ls'
+a vl "vi  pamr-wave.[eo][0-9]*"
+a ok "date; ls -lt pamr-wave.[eo][0-9]*; grep -i complete pamr-wave.[eo][0-9]*"
+mola
+echo "Generating list of acceptable number of processors"; ns

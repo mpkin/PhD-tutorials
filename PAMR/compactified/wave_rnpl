@@ -1,0 +1,163 @@
+# Solves the wave equation in compactified coordinates
+#
+# p=-c*exp(d*R)+c*exp(-d*R)
+# z=-c*exp(d*X)+c*exp(-d*X)
+#
+# where c, d are the adjustable parameters that control compactification
+#
+
+########################################################################
+# Parameters, grid and grid functions
+########################################################################
+
+# This is how to set the memory size
+system parameter int memsiz := 10000000
+
+parameter float Rmin 
+parameter float Rmax
+parameter float Xmin 
+parameter float Xmax
+parameter float amp
+parameter float delta
+parameter float r0
+parameter float epsdis := 0
+parameter float signum := 1
+parameter float R_center := 0.5 
+parameter float X_center := 0.5 
+parameter float a := 10
+parameter float b := 10
+parameter float c := 0.05
+parameter float d := 10
+
+rec coordinates t,R,X
+
+uniform rec grid g1 [1:NR][1:NX] {Rmin:Rmax} {Xmin:Xmax}
+
+float phi    on g1 at 0,1 {out_gf=1}
+float pi     on g1 at 0,1 {out_gf=1}
+float dRdp   on g1 at 0,1 {out_gf=1}
+float dRdp2  on g1 at 0,1 {out_gf=1}
+float dXdz   on g1 at 0,1 {out_gf=1}
+float dXdz2  on g1 at 0,1 {out_gf=1}
+float pR     on g1 at 0   {out_gf=0}
+float RR     on g1 at 0   {out_gf=0}
+
+########################################################################
+# Difference operators 
+########################################################################
+
+# O(h^2) CENTERED 1st DERIVATIVE
+operator D0(f,R) := (<0>f[1][0] - <0>f[-1][0]) / (2.0*dR)
+operator D0(f,X) := (<0>f[0][1] - <0>f[0][-1]) / (2.0*dX)
+operator FD0(f,R) := FTL((<0>f[1][0] - <0>f[-1][0]) / (2.0*dR),t)
+operator FD0(f,X) := FTL((<0>f[0][1] - <0>f[0][-1]) / (2.0*dX),t)
+
+# O(h^2) CENTERED 2nd DERIVATIVE
+operator D02(f,R) := (<0>f[1][0] - 2.0*<0>f[0][0] + <0>f[-1][0]) / (dR^2.0)
+operator D02(f,X) := (<0>f[0][1] - 2.0*<0>f[0][0] + <0>f[0][-1]) / (dX^2.0)
+operator FD02(f,R) := FTL((<0>f[1][0] - 2.0*<0>f[0][0] + <0>f[-1][0]) / (dR^2.0),t)
+operator FD02(f,X) := FTL((<0>f[0][1] - 2.0*<0>f[0][0] + <0>f[0][-1]) / (dX^2.0),t) 
+
+#-----------------------------------------------------------------------
+
+# O(h^2) FORWARDS 1st SPATIAL DERIVATIVE
+operator DF(f,R) := (-3.0*<0>f[0][0] + 4.0*<0>f[1][0] - <0>f[2][0]) / (2.0*dR)
+operator DF(f,X) := (-3.0*<0>f[0][0] + 4.0*<0>f[0][1] - <0>f[0][2]) / (2.0*dX)
+operator FDF(f,R) := FTL((-3.0*<0>f[0][0] + 4.0*<0>f[1][0] - <0>f[2][0]) / (2.0*dR),t)
+operator FDF(f,X) := FTL((-3.0*<0>f[0][0] + 4.0*<0>f[0][1] - <0>f[0][2]) / (2.0*dX),t)
+
+# O(h^2) BACKWARDS 1st SPATIAL DERIVATIVE
+operator DB(f,R) := (3.0*<0>f[0][0] - 4.0*<0>f[-1][0] + <0>f[-2][0]) / (2.0*dR)
+operator DB(f,X) := (3.0*<0>f[0][0] - 4.0*<0>f[0][-1] + <0>f[0][-2]) / (2.0*dX)
+operator FDB(f,R) := FTL((3.0*<0>f[0][0] - 4.0*<0>f[-1][0] + <0>f[-2][0]) / (2.0*dR),t)
+operator FDB(f,X) := FTL((3.0*<0>f[0][0] - 4.0*<0>f[0][-1] + <0>f[0][-2]) / (2.0*dX),t)
+
+#-----------------------------------------------------------------------
+
+# O(h^2) CRANK-NICHOLSON 1st TIME DERIVATIVE 
+operator DCNt(f,t) := (<1>f[0][0] - <0>f[0][0]) / dt
+
+# CRANK-NICHOLSON FORWARD TIME AVERAGE
+operator AVG(f,t) := (<1>f[0][0] + <0>f[0][0]) / 2.0
+
+# OTHER CRANK-NICHOLSON DERIVATIVES
+operator DCN0(f,R) := AVG(D0(<0>f[0][0],R),t)
+operator DCN0(f,X) := AVG(D0(<0>f[0][0],X),t)
+
+operator DCN02(f,R) := AVG(D02(<0>f[0][0],R),t)
+operator DCN02(f,X) := AVG(D02(<0>f[0][0],X),t)
+
+operator DCNF(f,R) := AVG(DF(<0>f[0][0],R),t)
+operator DCNF(f,X) := AVG(DF(<0>f[0][0],X),t)
+
+operator DCNB(f,R) := AVG(DB(<0>f[0][0],R),t)
+operator DCNB(f,X) := AVG(DB(<0>f[0][0],X),t)
+
+#-----------------------------------------------------------------------
+
+# FUTURE TIME LEVEL OPERATOR
+operator FTL(f,t) := <1>f[0][0]
+
+#-----------------------------------------------------------------------
+
+# KREISS-OLIGER DISSIPATION OPERATORS (unused)
+
+operator DISSR(f,R) := (epsdis/16.0) * (    <0>f[-2][0]  - 4.0*<0>f[-1][0]
+                                        + 6.0*<0>f[0][0] - 4.0*<0>f[1][0]
+                                        +   <0>f[2][0] )
+
+operator DISSX(f,X) := (epsdis/16.0) * (    <0>f[0][-2]  - 4.0*<0>f[0][-1]
+                                        + 6.0*<0>f[0][0] - 4.0*<0>f[0][1]
+                                        +   <0>f[0][2] )
+
+operator DCNtDISSR(f,t) := (<1>f[0][0] - <0>f[0][0] + AVG(DISSR(<0>f[0][0],R),t)) / dt
+operator DCNtDISSX(f,t) := (<1>f[0][0] - <0>f[0][0] + AVG(DISSX(<0>f[0][0],X),t)) / dt
+
+operator DCNtDISSRX(f,t) := (<1>f[0][0] - <0>f[0][0] + AVG(DISSR(<0>f[0][0],R),t) + AVG(DISSX(<0>f[0][0],X),t)) / dt 
+
+#-----------------------------------------------------------------------
+
+# QUADRATIC FIT OPERATOR
+
+# see Petryk PhD thesis Appendix B.2.1
+operator QFIT(f,R) := <1>f[0][0] - (4.0/3.0)*<1>f[1][0] + (1.0/3.0)*<1>f[2][0]
+
+
+########################################################################
+# Residual definitions (equations of motion)
+########################################################################
+
+# note: arbitrary outer BCs due to compactified coords
+evaluate residual pi { 
+   [2:NR-1][2:NX-1]  := (DCN0(phi, R)*dRdp + pR*(DCN02(phi, R)*dRdp^2 + DCN0(phi, R)*dRdp2))/pR + DCN02(phi, X)*dXdz^2 + DCN0(phi, X)*dXdz2 = DCNt(pi, t);
+   [2:NR-1][1:1]     := <1>pi[0][0] = 0;  
+   [2:NR-1][NX:NX]   := <1>pi[0][0] = 0;  
+   [NR:NR][1:NX]     := <1>pi[0][0] = 0;  
+   [1:1][1:NX]       := QFIT(pi,R);
+}
+
+evaluate residual phi {
+   [1:NR][1:NX]    := DCNt(phi,t) = AVG(pi,t);
+}
+
+
+########################################################################
+# Initializations and update structure 
+########################################################################
+
+initialize dRdp  { [1:NR][1:NX] := 1/(c*sqrt(4*d^2 + (d*exp(c*R) - d*exp(-c*R))^2)) }
+initialize dRdp2 { [1:NR][1:NX] := -(d*exp(c*R) - d*exp(-c*R))/(c*(4*d^2 + (d*exp(c*R) - d*exp(-c*R))^2)^(3/2)) }
+initialize dXdz  { [1:NR][1:NX] := 1/(c*sqrt(4*d^2 + (d*exp(c*X) - d*exp(-c*X))^2)) }
+initialize dXdz2 { [1:NR][1:NX] := -(d*exp(c*X) - d*exp(-c*X))/(c*(4*d^2 + (d*exp(c*X) - d*exp(-c*X))^2)^(3/2)) }
+initialize pR    { [1:NR][1:NX] := d*exp(c*R) - d*exp(-c*R) }
+
+initialize RR      { [1:NR-1][2:NX-1] := sqrt((d*exp(c*R)-d*exp(-c*R))^2+(d*exp(c*X)-d*exp(-c*X))^2) }
+
+initialize phi    { [1:NR-1][2:NX-1] := amp * exp(-(RR/delta)^2) }
+
+initialize pi     { [1:NR][1:NX] := 0 }
+
+looper iterative
+
+auto update pi, phi
+

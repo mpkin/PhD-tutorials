@@ -1,0 +1,10 @@
+lambda := 1
+Nx0    := 100
+level  := 0
+ser    := 0
+epsiter := 10000
+fout   := 1
+iter   := 15000
+output := 0-*/100
+in_file  := "input0.sdf"
+out_file := "output0.sdf"

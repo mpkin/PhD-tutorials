@@ -1,0 +1,103 @@
+# This RNPL file shows how to solve a basic ODE using RNPL's
+# built-in Newton-Gauss-Seidel relaxation
+#
+# Here we solve the set of coupled second-order non-linear
+# ODEs given by
+#  
+#  x^2 * K''(x) = K(x) * H(x)^2 + K(x) * ( K(x)^2 - 1 )
+#  x^2 * H''(x) = 2 * K(x)^2 * H(x) 
+#
+#  with boundary conditions
+#
+#  K(0)=1        K(a)=0
+#  H(0)=0        H(a)=a-1
+#
+#  where a >> 0. This system has the exact solution
+#
+#  K(x) =  x / sinh(x)
+#  H(x) = (x / tanh(x)) - 1
+
+
+#-----------------------------------------------------------
+# Definition of memory size
+#-----------------------------------------------------------
+system parameter int memsize := 1000000
+
+#-----------------------------------------------------------
+# Parameters
+#-----------------------------------------------------------
+ 
+parameter float xmin := 0
+parameter float xmax := 12
+parameter float alpha := 0
+
+#-----------------------------------------------------------
+# Coordinate system
+#-----------------------------------------------------------
+rec coordinates t,x
+
+#-----------------------------------------------------------
+# Definition of finite-difference grid: [1:Nx] specifies
+# the index range, {xmin:xmax} the coordinate range.
+#-----------------------------------------------------------
+uniform rec grid g1 [1:Nx] {xmin:xmax}
+
+#-----------------------------------------------------------
+# Definition of grid functions and time levels
+#-----------------------------------------------------------
+float K       on g1 at 0,1 {out_gf = 1}
+float H       on g1 at 0,1 {out_gf = 1}
+float exactK  on g1 at 0,1 {out_gf = 1}
+float exactH  on g1 at 0,1 {out_gf = 1}
+float errK    on g1 at 0,1 {out_gf = 1}
+float errH    on g1 at 0,1 {out_gf = 1}
+
+#-----------------------------------------------------------
+# Finite difference operators (second-order centered)
+#-----------------------------------------------------------
+operator D(f,x)    := (<1>f[1] - <1>f[-1])/(2*dx)
+operator D2(f,x,x) := (<1>f[1] - 2*<1>f[0] + <1>f[-1])/(dx*dx)
+
+#-----------------------------------------------------------
+# Finite difference equations
+#-----------------------------------------------------------
+evaluate residual K { [1:1] := <1>K[0] = 1 ;
+                   [2:Nx-1] := x*x*D2(K,x,x) - <1>K[0]*<1>H[0]^2 - <1>K[0]*(<1>K[0]^2 - 1) ;
+                    [Nx:Nx] := <1>K[0] = 0 }
+
+evaluate residual H { [1:1] := <1>H[0] = 0 ;
+                   [2:Nx-1] := x*x*D2(H,x,x) - 2*<1>K[0]^2*<1>H[0] - alpha*<1>H[0]*(<1>H[0]^2 - x^2) ;
+                    [Nx:Nx] := <1>H[0] = xmax-1 }
+
+residual exactK { [1:Nx] := <1>exactK[0] = 0.0 } // update manually below
+residual exactH { [1:Nx] := <1>exactK[0] = 0.0 } // update manually below
+residual errK   { [1:Nx] := <1>errK[0] = 0.0 }   // update manually below
+residual errH   { [1:Nx] := <1>errK[0] = 0.0 }   // update manually below
+
+
+#-----------------------------------------------------------
+# Initialization statement
+#-----------------------------------------------------------
+#initialize K      { [1:Nx] := exp(-(x/3)^2) } // initial guess
+#initialize H      { [1:Nx] := x-1 }           // initial guess
+initialize K      { [1:Nx] := exp(-(x/4)^2) } // initial guess
+initialize H      { [1:Nx] := x/2 }           // initial guess
+initialize exactK { [1:Nx] := 0 }   // initialized manually below 
+initialize exactH { [1:Nx] := 0 }   // initialized manually below 
+initialize errK   { [1:Nx] := 0 }   // initialized manually below 
+initialize errH   { [1:Nx] := 0 }   // initialized manually below 
+
+manual_init.inc manual_init initialize exactK, exactH, errK, errH
+  HEADER
+    x, xmin, xmax, K, H, exactK, exactH, errK, errH
+
+auto initialize K, H
+
+# make sure you set epsiter in the id files so you only do 1 iter!
+looper iterative
+
+auto update K, H
+
+manual_update.inc manual_update updates exactK, exactH, errK, errH
+  HEADER
+    x, xmin, xmax, K, H, exactK, exactH, errK, errH

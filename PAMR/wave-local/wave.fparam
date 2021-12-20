@@ -1,0 +1,36 @@
+#---------- gh3d fixed parameter file --------------------
+
+app_name := ["1/2/3D AMRD wave equation with periodic/dirichlet boundaries example"]
+
+num_evo_tl := 3
+ic_n := 2
+
+num_hyperbolic_vars := 1
+hyperbolic_vars := [ "phi" ]
+
+# FP: some tests
+
+PAMR_internal_mt := 1
+AMRD_internal_mt := 1
+
+t0 := 0
+
+num_amr_inject   := 1
+amr_inject       := [ "phi" ]
+
+num_amr_sync     := 1
+amr_sync         := [ "phi" ]
+
+num_amr_interp4  := 1
+amr_interp4      := [ "phi" ]
+
+num_amr_transfer4:= 1
+amr_transfer4    := [ "phi" ]
+
+num_rg_diss_vars := 1
+rg_diss_vars     := [ "phi" ]
+
+num_tn_diss_vars := 1
+tn_diss_vars := [ "phi" ]
+
+#-----------------------------------------------------

@@ -1,0 +1,180 @@
+#! /bin/sh
+
+#=======================================================================
+#
+# mygnuplotd <datafile1> [ <datafile2> ... <datafile5> ]
+#
+# This is the "deluxe" version of mygnuplot which prompts the user to
+# enter various parameters before plotting.
+#
+# Given up to 5 data files, makes a basic plot using GNUplot. The data
+# files should only have 2 columns each; additional columns not plotted
+#
+#=======================================================================
+
+# usage instructions
+Usage=" Usage: mygnuplotd <datafile1> [ <datafile2> ... <datafile5> ] \n\n Plot parameters can be specified at runtime\n\n"
+
+# create a temporary file to remember previously-used parameters
+tmpfile="/tmp/mygnuplotd.tmp"
+if [ ! -f $tmpfile ] # file doesn't exist; create it
+then
+  echo "p1legendo=" >> $tmpfile
+  echo "p2legendo=" >> $tmpfile
+  echo "p3legendo=" >> $tmpfile
+  echo "p4legendo=" >> $tmpfile
+  echo "p5legendo=" >> $tmpfile
+  echo "ptitleo=" >> $tmpfile
+  echo "xlabelo=" >> $tmpfile
+  echo "ylabelo=" >> $tmpfile
+  echo "ymino=" >> $tmpfile
+  echo "ymaxo=" >> $tmpfile
+  echo "xmino=" >> $tmpfile
+  echo "xmaxo=" >> $tmpfile
+else  # read in old parameters
+  p1legendo=$(awk -F "=" '/p1legendo/ {print $2}' $tmpfile)
+  p2legendo=$(awk -F "=" '/p2legendo/ {print $2}' $tmpfile)
+  p3legendo=$(awk -F "=" '/p3legendo/ {print $2}' $tmpfile)
+  p4legendo=$(awk -F "=" '/p4legendo/ {print $2}' $tmpfile)
+  p5legendo=$(awk -F "=" '/p5legendo/ {print $2}' $tmpfile)
+  ptitleo=$(awk -F "=" '/ptitleo/ {print $2}' $tmpfile)
+  xlabelo=$(awk -F "=" '/xlabelo/ {print $2}' $tmpfile)
+  ylabelo=$(awk -F "=" '/ylabelo/ {print $2}' $tmpfile)
+  ymino=$(awk -F "=" '/ymino/ {print $2}' $tmpfile)
+  ymaxo=$(awk -F "=" '/ymaxo/ {print $2}' $tmpfile)
+  xmino=$(awk -F "=" '/xmino/ {print $2}' $tmpfile)
+  xmaxo=$(awk -F "=" '/xmaxo/ {print $2}' $tmpfile)
+fi
+
+# note: to scale data within gnuplot, you can use something like
+#       plot "data.dat" using 1:(2*\$2)
+# note: we escape underscores with \\\ to prevent subscripting
+case $# in
+      1) read -r -p "Line 1 legend title [$p1legendo]: " p1legend;
+         p1legend=${p1legend:-${p1legendo}};
+         p1legendt=$(echo "$p1legend" | sed -e 's/_/\\\\\\_/');
+         pltcmd="plot \"$1\" using 1:2 w lp ls 1 t \"$p1legendt\"" ;;
+      2) read -r -p "Line 1 legend title [$p1legendo]: " p1legend;
+         read -r -p "Line 1 legend title [$p2legendo]: " p2legend;
+         p1legend=${p1legend:-${p1legendo}};
+         p2legend=${p2legend:-${p2legendo}};
+         p1legendt=$(echo "$p1legend" | sed -e 's/_/\\\\\\_/');
+         p2legendt=$(echo "$p2legend" | sed -e 's/_/\\\\\\_/');
+         pltcmd="plot \"$1\" using 1:2 w lp ls 1 t \"$p1legendt\", \"$2\" using 1:2 w lp ls 2 t \"$p2legendt\"" ;;
+      3) read -r -p "Line 1 legend title [$p1legendo]: " p1legend;
+         read -r -p "Line 2 legend title [$p2legendo]: " p2legend;
+         read -r -p "Line 3 legend title [$p3legendo]: " p3legend;
+         p1legend=${p1legend:-${p1legendo}};
+         p2legend=${p2legend:-${p2legendo}};
+         p3legend=${p3legend:-${p3legendo}};
+         p1legendt=$(echo "$p1legend" | sed -e 's/_/\\\\\\_/');
+         p2legendt=$(echo "$p2legend" | sed -e 's/_/\\\\\\_/');
+         p3legendt=$(echo "$p3legend" | sed -e 's/_/\\\\\\_/');
+         pltcmd="plot \"$1\" using 1:2 w lp ls 1 t \"$p1legendt\", \"$2\" using 1:2 w lp ls 2 t \"$p2legendt\", \"$3\" using 1:2 w lp ls 3 t \"$p3legendt\"" ;;
+      4) read -r -p "Line 1 legend title [$p1legendo]: " p1legend;
+         read -r -p "Line 2 legend title [$p2legendo]: " p2legend;
+         read -r -p "Line 3 legend title [$p3legendo]: " p3legend;
+         read -r -p "Line 4 legend title [$p4legendo]: " p4legend;
+         p1legend=${p1legend:-${p1legendo}};
+         p2legend=${p2legend:-${p2legendo}};
+         p3legend=${p3legend:-${p3legendo}};
+         p4legend=${p4legend:-${p4legendo}};
+         p1legendt=$(echo "$p1legend" | sed -e 's/_/\\\\\\_/');
+         p2legendt=$(echo "$p2legend" | sed -e 's/_/\\\\\\_/');
+         p3legendt=$(echo "$p3legend" | sed -e 's/_/\\\\\\_/');
+         p4legendt=$(echo "$p4legend" | sed -e 's/_/\\\\\\_/');
+         pltcmd="plot \"$1\" using 1:2 w lp ls 1 t \"$p1legendt\", \"$2\" using 1:2 w lp ls 2 t \"$p2legendt\", \"$3\" using 1:2 w lp ls 3 t \"$p3legendt\", \"$4\" using 1:2 w lp ls 4 t \"$p4legendt\"" ;;
+      5) read -r -p "Line 1 legend title [$p1legendo]: " p1legend;
+         read -r -p "Line 2 legend title [$p2legendo]: " p2legend;
+         read -r -p "Line 3 legend title [$p3legendo]: " p3legend;
+         read -r -p "Line 4 legend title [$p4legendo]: " p4legend;
+         read -r -p "Line 5 legend title [$p5legendo]: " p5legend;
+         p1legend=${p1legend:-${p1legendo}};
+         p2legend=${p2legend:-${p2legendo}};
+         p3legend=${p3legend:-${p3legendo}};
+         p4legend=${p4legend:-${p4legendo}};
+         p5legend=${p5legend:-${p5legendo}};
+         p1legendt=$(echo "$p1legend" | sed -e 's/_/\\\\\\_/');
+         p2legendt=$(echo "$p2legend" | sed -e 's/_/\\\\\\_/');
+         p3legendt=$(echo "$p3legend" | sed -e 's/_/\\\\\\_/');
+         p4legendt=$(echo "$p4legend" | sed -e 's/_/\\\\\\_/');
+         p5legendt=$(echo "$p5legend" | sed -e 's/_/\\\\\\_/');
+         pltcmd="plot \"$1\" using 1:2 w lp ls 1 t \"$p1legendt\", \"$2\" using 1:2 w lp ls 2 t \"$p2legendt\", \"$3\" using 1:2 w lp ls 3 t \"$p3legendt\", \"$4\" using 1:2 w lp ls 4 t \"$p4legendt\", \"$5\" using 1:2 w lp ls 5 t \"$p5legendt\"" ;;
+      *) printf "$Usage" ;
+         exit 1;; 
+esac
+
+read -r -p "Plot title/filename [$ptitleo]: " ptitle;
+ptitle=${ptitle:-${ptitleo}};
+ptitlet=$(echo "$ptitle" | sed -e 's/_/\\\\\\_/');
+
+read -r -p "Plot x-axis label [$xlabelo]: " xlabel;
+xlabel=${xlabel:-${xlabelo}};
+read -r -p "Plot y-axis label [$ylabelo]: " ylabel;
+ylabel=${ylabel:-${ylabelo}};
+xlabel=$(echo "$xlabel" | sed -e 's/_/\\\\\\_/');
+ylabel=$(echo "$ylabel" | sed -e 's/_/\\\\\\_/');
+if [ -n "$xlabel" ]; then xlabelcmd="set xlabel \"$xlabel\""; fi
+if [ -n "$ylabel" ]; then ylabelcmd="set ylabel \"$ylabel\""; fi
+
+read -r -p "Set y-axis range? (Y): " yrange
+case $yrange in
+      Y) read -r -p "Set y-min [$ymino]: " ymin;
+         ymin=${ymin:-${ymino}};
+         read -r -p "Set y-max [$ymaxo]: " ymax;
+         ymax=${ymax:-${ymaxo}};
+         yrangecmd="set yrange [$ymin:$ymax]";
+         sed -i "s/^ymino=.*/ymino=$ymin/" /tmp/mygnuplotd.tmp;
+         sed -i "s/^ymaxo=.*/ymaxo=$ymax/" /tmp/mygnuplotd.tmp;;
+      *) sed -i "s/^ymino=.*/ymino=/" /tmp/mygnuplotd.tmp;
+         sed -i "s/^ymaxo=.*/ymaxo=/" /tmp/mygnuplotd.tmp;;
+esac
+
+read -r -p "Set x-axis range? (Y): " xrange
+case $xrange in
+      Y) read -r -p "Set x-min [$xmino]: " xmin;
+         xmin=${xmin:-${xmino}};
+         read -r -p "Set x-max [$xmaxo]: " xmax;
+         xmax=${xmax:-${xmaxo}};
+         xrangecmd="set xrange [$xmin:$xmax]";
+         sed -i "s/^xmino=.*/xmino=$xmin/" /tmp/mygnuplotd.tmp;
+         sed -i "s/^xmaxo=.*/xmaxo=$xmax/" /tmp/mygnuplotd.tmp;;
+      *) sed -i "s/^xmino=.*/xmino=/" /tmp/mygnuplotd.tmp;
+         sed -i "s/^xmaxo=.*/xmaxo=/" /tmp/mygnuplotd.tmp;;
+esac
+
+gnuplot<<END
+# set the terminal to png, font size to 15, and image size
+set terminal png notransparent enhanced font ',15' size 800,600
+
+# nomirror means do not put tics on opposite side of the plot
+set xtics nomirror
+set ytics nomirror
+
+set style line 1 lt 1 lc rgb "#FF0000" lw 2 pt 7  ps 0.2
+set style line 2 lt 1 lc rgb "#FFB600" lw 2 pt 11 ps 0.2
+set style line 3 lt 1 lc rgb "#0083FF" lw 2 pt 9  ps 0.1
+set style line 4 lt 1 lc rgb "#308e29" lw 2 pt 8  ps 0.2
+set style line 5 lt 1 lc rgb "#32cd32" lw 2 pt 5  ps 0.2
+
+set title "$ptitlet"
+set output "$ptitle.png"
+set ticslevel 0.5
+set format y "%12f"
+set grid
+$xrangecmd
+$yrangecmd
+$xlabelcmd
+$ylabelcmd
+$pltcmd
+END
+
+# write the new values
+sed -i "s/^p1legendo=.*/p1legendo=$p1legendt/" /tmp/mygnuplotd.tmp
+sed -i "s/^p2legendo=.*/p2legendo=$p2legendt/" /tmp/mygnuplotd.tmp
+sed -i "s/^p3legendo=.*/p3legendo=$p3legendt/" /tmp/mygnuplotd.tmp
+sed -i "s/^p4legendo=.*/p4legendo=$p4legendt/" /tmp/mygnuplotd.tmp
+sed -i "s/^p5legendo=.*/p5legendo=$p5legendt/" /tmp/mygnuplotd.tmp
+sed -i "s/^ptitleo=.*/ptitleo=$ptitlet/" /tmp/mygnuplotd.tmp
+sed -i "s/^xlabelo=.*/xlabelo=$xlabel/" /tmp/mygnuplotd.tmp
+sed -i "s/^ylabelo=.*/ylabelo=$ylabel/" /tmp/mygnuplotd.tmp

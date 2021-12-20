@@ -1,0 +1,67 @@
+########################################################################
+# FIXED PARAMETER FILE
+
+app_name := ["wave equation"]
+
+# the number of time levels in the AMR hierarchy (should be 2 since I
+# am using a 2-level CN scheme)
+num_evo_tl := 2
+
+# time level considered t=t0 for initial data generation
+# Note: only ic_n := 2 is supported at this time
+ic_n := 2
+
+# initial time
+t0 := 0
+
+# define "work" variables (i.e. variables that are only defined in the
+# AMR hierarchy at one time level, e.g. for computing residuals)
+AMRH_work_vars := [ "phi_res" "pi_res" ]
+
+# which variables have evolution equations?
+hyperbolic_vars := [ "phi" "pi" "dRdp" "dRdp2" "dXdz" "dXdz2" "RR" "pR" ]
+
+# state which variables are even/odd along the axis of symmetry. This is used
+# for applying the dissipation stencil near the axis
+even_vars_x0min := [ "phi" "pi" ]
+
+# variables to inject from a fine level to the coarser level
+# at synchronization times. This definition yields to "straight injection"
+# behaviour (see Table I of PAMR reference manual); you could instead
+# define amr_hw_inject for "half-weight restriction" injection
+amr_inject := [ "phi" "pi" ]
+
+# variables that need to have their ghost regions synchronized after
+# each iteration of the evolution equations (note that this is 
+# inter-level, i.e. synchronization only makes sense for grids
+# within the same refinement level). If listed here, PAMR will 
+# enfore single-valuedness in the overlap regions. If not listed
+# here, PAMR will perform no synchronization 
+amr_sync := [ "phi" "pi" ]
+
+# variables that need to be interpolated on their AMR boundaries via a
+# 4th-order spatial interpolation and 2nd-order time interpolation of the
+# parent grid. You could also define amr_interp1 or amr_interp2 for
+# first-order conservative or second-order MC limiter interpolation,
+# respectively (though these are only defined for cell-centered
+# representations)
+amr_interp4 := [ "phi" "pi" ]
+
+# variables that will be initialized on a new patch of fine level after
+# a regrid by fourth-order polynomial interpolation from the parent grid.
+# You could instead define amr_transfer2 for second-order polynomial
+# interpolation, if you so desired. See table IV of the PAMR reference manual
+amr_transfer4 := [ "phi" "pi" ]
+
+# variables to smooth via Kreiss-Oliger dissipation BEFORE taking
+# a time step. This is the standard way to apply KO dissipation on the
+# retarded time levels, and is also useful for "smoothing injection 
+# boundaries on coarser levels" (see amrd/evolve.c). It is also possible
+# to dissipate after taking a time step (via tnp1_diss_vars)
+tn_diss_vars := [ "phi" "pi" ]
+#tn_diss_vars := [ "pi" ]
+#tnp1_diss_vars := [ "phi" "pi" ]
+
+# variables to smooth via Kreiss-Oliger dissipation after regridding
+rg_diss_vars := [ "phi" "pi" ]
+#rg_diss_vars := [ "pi" ]

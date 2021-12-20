@@ -1,0 +1,29 @@
+level := 0
+
+in_file  := "in0.sdf"   
+out_file := "out0.sdf"
+
+# If non-zero, enables output to .sdf files
+fout := 1
+
+output := 0-*/1
+
+Nx0 := 1024
+
+iter := 1024
+
+# Courant factor: dt/dx
+lambda := .3
+
+# Convergence criteria for iterative time-stepping procedure
+epsiter := 1.0e-12
+
+# String to prepend to all output filenames
+tag := "1d_"
+
+# Extrema of spatial domain
+xmin := -10.0
+xmax := 10.0
+
+# Klein-Gordon mass
+mass := 0.5

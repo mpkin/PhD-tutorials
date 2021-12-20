@@ -1,0 +1,64 @@
+#---------- WAVE 1d example run-time parameter file -----------------------------------
+echo_params := 1
+pamr_trace_lev := 0
+evo_trace := 1
+
+#-------- KG field initial data (domain is a cube [-1,1,...]) ------------------------
+
+phi_amp_1 := 1.0
+phi_r0_1 := 0
+phi_delta_1 := 0.05
+phi_x0_1 := [0.5 0.5]
+phi_ecc_1 := [0.0 0.0]
+
+#--------------------------------------------------------------------------
+
+dim := 2
+ghost_width := [2 2]
+periodic := [1 1]
+base_bbox := [-1.0 1.0 -1.0 1.0]
+base_shape := [33 33]
+max_lev := 4
+min_width := [5 5]
+lambda := 0.25
+rho_sp := 2
+rho_tm := 2
+
+gdm_no_overlap := 1
+
+steps := 128
+evo_max_iter := 1
+evo_min_iter := 1
+skip_frg := 1
+
+id_method := 0
+
+np1_initial_guess := 1
+io_node := 0
+
+rg_eps_diss := 0.2
+eps_diss := 0.1
+diss_bdy := 0
+
+evo_tol := 1e-5
+TRE_max := 1.0e-5
+num_TRE_vars := 1
+TRE_vars := [ "phi" ]
+TRE_buffer := 8
+TRE_ibc_buffer := 2
+regrid_interval := 16
+TRE_norm := 0
+regrid_script := 0
+regrid_script_name = "example_1d.rgs"
+
+num_save_2_vars := 1
+save_2_vars := [ "phi" ]
+
+cls_merge_dist := 8
+cls_method := 0
+cls_align_mode := 1
+
+save_tag := "wave_2d_L0_"
+
+save_ivec := 1-*/8
+#-----------------------------------------------------

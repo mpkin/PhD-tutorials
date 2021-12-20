@@ -1,0 +1,352 @@
+######################################################################
+# RUNTIME PARAMETER FILE
+
+#-----------------------------------------------------------------------
+# DEBUGGING OPTIONS
+#-----------------------------------------------------------------------
+
+# if non-zero, then all params are echoed to screen at runtime
+echo_params := 1
+
+# set to 1 for PAMR debugging
+pamr_trace_lev := 0
+
+# set 0-3 to output less/more info after every step
+evo_trace := 3
+
+# various debugging options that save diagnostic SDF files
+# ID_DV_trace  - outputs SDF files related to the initial data
+#                generation; set 1 to turn on
+# evo_DV_trace - outputs SDF files related to processes that occur near
+#                a single time step: residual calculation, TRE
+#                calculation, cmask values, etc. for all time levels
+#                and grid functions; set to 1 to turn on
+# evo_DV_trace_t_on  - determines the time at which the diagnostic grid
+#                      functions invoked by evo_DV_trace are generated;
+#                      should be a real number indicating evolution time
+# evo_DV_trace_t_off - the time at which the diagnostic grid functions
+#                      invoked by evo_DV_trace stop being generated;
+#                      should be a real number indicating evolution time
+ID_DV_trace := 0
+evo_DV_trace := 0
+evo_DV_trace_t_on := 0.0
+evo_DV_trace_t_off := 4.0
+# Note that killing the job mid-run seems to screw up these outputs!
+
+#-----------------------------------------------------------------------
+# INITIAL DATA PARAMETERS 
+#-----------------------------------------------------------------------
+dim := 2
+signum := 1
+a := 10
+b := 10
+c := 0.05
+d := 10
+amp := 1.0
+r0 := 0.0
+delta := 10
+
+# RNPL dissipation parameter (UNUSED)
+epsdis := 0.0
+
+#-----------------------------------------------------------------------
+# GENERAL OPTIONS for PAMR/AMRD
+#-----------------------------------------------------------------------
+
+# size of "ghost region" to add along (artificial) grid boundaries
+# when splitting a grid across several nodes. Larger ghost width
+# yields more "overlap" between nodes. Depends on choice of FD stencil.
+# Used to prescribe BCs for each of the processors you are running on
+# See Petryk PhD thesis, Section C.4.1
+ghost_width := [3 3]
+
+# grid distribution method to use when running on multiple nodes
+# (see PAMR reference manual Table VI, AMRD reference manual sec IV.C,
+#  and comments in /include/pamr_w.h)
+#
+# gdm_grid_by_grid - if = 0,  then it is done "level-by-level" (default);
+#                             collectively divide all grids in a level
+#                             across all the nodes
+#                    if != 0, then it is done "grid-by-grid"; each grid
+#                             in a level gets divided across n pieces
+#                    Rule of thumb: if (# nodes) >> (# grids per level)
+#                                   then gdm_grid_by_grid = 0
+#                                   else gdm_grid_by_grid = 1
+#
+# gdm_align - If non-zero then the ghost regions are "padded" so that
+#             all (local) child grid boundaries are force to align with
+#             parent gridlines. Default is 0 (off)
+#
+# gdm_no_overlap - If non-zero, then overlapping grids in the hierarchy are 
+#                  clipped prior to distribution in the parallel
+#                  environment. Default is 0 (off); apparently not yet 
+#                  implemented in PAMR
+gdm_grid_by_grid := 0
+gdm_align := 0
+gdm_no_overlap := 0
+
+# if non-zero, the spatial boundary is taken as periodic. Since we are
+# generally using outflowing boundary conditions, turn this off. See
+# the PAMR reference manual for details
+periodic := [0 0]
+
+# coordinate range in p, z directions
+#base_bbox := [0 15 -15 15]
+#base_bbox := [0 20 -20 20]
+#base_bbox := [0 25 -25 25]
+#base_bbox := [0 30 -30 30]
+#base_bbox := [0 35 -35 35]
+#base_bbox := [0 45 -45 45]
+#base_bbox := [0 50 -50 50]
+base_bbox := [0 75 -75 75]
+
+# base-level grid resolution in x, y directions. This will determine
+# subsequent child grid resolutions since they are related to the
+# parent by spatial refinement ratio
+# should be set to a factor of 2^n+1 to ensure nice round output times
+#base_shape := [65 129]
+base_shape := [129 257]
+#base_shape := [257 513]
+#base_shape := [513 1025]
+#base_shape := [1025 2049]
+#base_shape := [2049 4097]
+
+# minimum size a child grid can be split into. Note that setting too 
+# small may lead to too many child grids which increases errors arising
+# at parent/child AMR boundaries (see Pretorius thesis P. 28 & Sec. 2.3.7)
+min_width := [33 33]
+#min_width := [65 65]
+
+# sets a region on child grids adjacent to AMR boundaries on which to 
+# reset (i.e. reinterpolate from parent grid) grid function values after
+# child-level evolution is complete but prior to child-to-parent injection
+#re_interp_width := 0
+#re_interp_width := 16
+#re_interp_width := 2
+re_interp_width := 8
+
+# spatial/temporal refinement ratio for all levels
+rho_sp := 2
+rho_tm := 2
+
+# if non-zero, skip the very first regrid when evolving (e.g. regrids at
+# t=0.0,0.25,0.375,0.50,... i.e. t=0.125 is skipped). This behaviour is 
+# apparent if you check the PAMR job output file. Since there is no
+# specific need for it here, we turn it off
+skip_frg := 0
+
+# method used to generate the initial hierarchy of grids. Options:
+# 0 - Take a single (coarse) step of the evolution and use the truncation
+#     error estimates from the TRE_vars to initialize the hierarchy
+# 1 - use a truncation error estimate from elliptic equations; only
+#     relevant for multigrid
+id_method := 0
+
+# specify which node will be used for i/o
+io_node := 0
+
+# clustering method to use. The basic idea is that flagged regions of
+# high TE are further separated into clusters; each cluster is covered
+# with a single rectangle. Each rectangle will become a finer grid with
+# a smaller mesh spacing. Currently, only 0 is supported for this 
+# option, which tells PAMR to divide regions of high TE into minimal
+# rectangles. Other shapes are also possible (e.g. slanted rectangles or
+# V shapes) but will probably not be supported. For more info about
+# clustering, refer to Pretorius thesis Sec. 2.3.3 or
+# DOI: 10.1109/21.120081 or
+# DOI: 10.1016/0021-9991(89)90035-1
+cls_method := 0
+
+# if clusters are within this distance then merge them into one cluster
+cls_merge_dist := 8
+
+# maximum depth of AMR hierarchy
+#    max_lev=1 is unigrid 
+#    max_lev=2 is always fully refined (due to self-shadow hierarchy
+#              method for computing truncation errors) which means
+#              the first two levels are like the base level; see
+#              Pretorius thesis P. 52
+#    max_lev=3 is parent (coarse) grid + finer grid
+#    and so on... note that more levels -> larger output file size
+max_lev := 5
+
+# set to 1 to enable calculation of global (L-Infinity) norms in
+# amrd/evolve.c, which is important if you want to use the L-Infinity
+# norm of each grid function as a normalization factor in the AMRD
+# hook function app_evolve_residual()
+calc_global_var_norms := 1
+
+# the minimum possible return value of the L-Infinity norm of each
+# grid function. Set to some small, but non-zero value to avoid 
+# divide-by-zero errors
+global_var_norm_floor := 0.01
+
+#-----------------------------------------------------------------------
+# EVOLUTION OPTIONS for PAMR/AMRD
+#-----------------------------------------------------------------------
+
+# from the AMRD Reference Manual, evo_tol specifies the tolerance for
+# iterations in an equation. If this residual is less than or equal to
+# evo_tol, then the equations are considered solved
+evo_tol := 1e-5
+evo_max_iter := 50
+evo_min_iter := 3
+
+# ssc stands for 'separate stopping criteria'. Only relevant if using
+# multigrid. See AMRD Reference Manual for details
+evo_ssc := 0
+
+# how the advanced time level t^(n+1) is initialized prior to evolution
+# and iteration
+#   0 - do nothing (default) so that the advanced time level of the next
+#       step will just be the most retarded time level of the previous
+#       step (since time-levels are cyclically switched in PAMR/AMRD)
+#   1 - straight copy of data from t^n to t^(n+1)
+np1_initial_guess := 0
+
+# TRE_max: max estimated truncation error to determine where to place
+#          child grids in the hierarchy. The truncation error at each
+#          point is the l2-norm of the estimated truncation errors of
+#          all variables specified in TRE_vars. Smaller values will
+#          result in larger file sizes, as finer meshes are needed
+# TRE_buffer: number of buffers cells to add to region of high TRE. The
+#             buffer zone ensures signals in high-error regions do not
+#             leave the flagged region before the next regridding; see
+#             also regrid_interval. Should have TRE_buffer > rho_sp (see amrd/cls.c for reasons why)
+# TRE_ibc_buffer: interior boundary clear buffer, i.e. number of buffer
+#                 cells adjacent to interior boundaries in which to
+#                 clear/zero the truncation error estimate. You should
+#                 have TRE_ibc_buffer < min_width. Applied *BEFORE*
+#                 TRE_buffer
+# TRE_ibc_a_buffer: identical to TRE_ibc_buffer, except applied *AFTER*
+#                  TRE_buffer
+# TRE_ibcp_buffer: same as TRE_ibc_buffer, except computed *locally*
+#                  and grid-by-grid. Experimental, and the result 
+#                  could depend heavily on the number of nodes and the
+#                  grid distribution. See AMRD reference manual
+# TRE_vars: vars for which a TRE estimate should be computed prior to
+#           regridding
+# TRE_norm: if non-zero, the TRE of each var is divided by its l2 norm
+#           over the level
+#TRE_max := 1.0e-4
+#TRE_max := 5.0e-5
+#TRE_max := 2.5e-5
+#TRE_max := 1.0e-5
+#TRE_max := 5.0e-6
+#TRE_max := 1.0e-6
+#TRE_max := 5.0e-7
+#TRE_max := 1.0e-7
+TRE_max := 1.0e-8
+TRE_buffer := 8
+#TRE_ibc_buffer := 2
+TRE_ibc_buffer := 6
+TRE_ibc_a_buffer := 0
+TRE_ibcp_buffer := 0
+#TRE_vars := [ "phi" ]
+TRE_vars := [ "phi" "pi" ]
+TRE_norm := 0
+
+# local CFL factor (note that if the domain is not square, the output times
+# might be different than the equivalent RNPL setup). Note: dt=lambda*min(dx,dy,...)
+#lambda := 0.05
+#lambda := 0.125
+#lambda := 0.2
+#lambda := 0.25
+lambda := 0.5
+
+# number of base-level time steps to perform (i.e. animation length)
+#steps := 1
+#steps := 8
+#steps := 16
+#steps := 32
+#steps := 64
+#steps := 128
+#steps := 256
+steps := 512
+#steps := 1024
+#steps := 2048
+#steps := 4096
+#steps := 8192
+#steps := 16384
+#steps := 32768
+#steps := 65536
+
+# how many timeslices to include in the SDF (uses RNPL syntax here)
+# Note: you should *always* use a 1 as the first time step if you
+# want to start outputting at t=0.00. Setting it to 0 will work if
+# you only do 0-*, but as soon as you want fractional time steps
+# (e.g. 0-*/2) you will start encounter bugs.
+save_ivec := 1-*/1
+#save_ivec := 1-*/2
+#save_ivec := 1-*/4
+#save_ivec := 1-*/8
+#save_ivec := 1-*/16
+#save_ivec := 1-*/32
+#save_ivec := 1-*/64
+#save_ivec := 1-*/128
+#save_ivec := 1-*/256
+#save_ivec := 1-*/512
+#save_ivec := 1-*/1024
+#save_ivec := 1-*/4096
+
+# specify times to save AMR level 2, 3, etc.
+#save_ivec_2 := 1-*/1
+#save_ivec_3 := 1-*/1
+#save_ivec_4 := 1-*/1
+#save_ivec_5 := 1-*/1
+#save_ivec_6 := 1-*/1
+#save_ivec_7 := 1-*/1
+
+# amount of dissipation to apply to tn_diss_vars and tnp1_diss_vars
+# (defined in .fparam)
+#eps_diss := 0.0
+#eps_diss := 0.2
+#eps_diss := 0.25
+#eps_diss := 0.5
+eps_diss  := 0.8
+
+# amount of dissipation to apply to rg_diss_vars (defined in .fparam)
+#rg_eps_diss := 0.0
+#rg_eps_diss := 0.2
+#rg_eps_diss := 0.5
+rg_eps_diss := 0.8
+
+# set to 1 to extend diss stencil all the way to grid boundaries
+# see doi.org/10.1016/0021-9991(89)90035-1
+diss_bdy := 1
+
+# optional regridding script (can be used for convergence tests)
+# 0 - do nothing (equivalent to commmenting out this section)
+# 1 - read from a file   (Note: there appears to be a mistake in the
+# 2 - save to a file            AMRD ref man; it has 2 and 1 swapped)
+# Note you have to comment out this option if using max_lev:=1 (unigrid)
+# regrid_trace:=1 will save additional diagnostic grid functions
+regrid_script := 0
+regrid_script_name = "out.rgs"
+regrid_trace := 0
+
+# how often (in steps) to regrid on each level. Ideally, this should
+# be set to the larget possible number that could track evolving
+# features of the solution. e.g. if lambda=0.25, then we expect a
+# wave to propagate at most 1 grid point every 4 time steps. Thus
+# you can safely set regrid_interval := 4 (which is 1/lambda).
+# However, it could be set to numbers several times larger than
+# 1/lambda if a large buffer zone is used. You should have usually
+# have (lambda)*(regrid_interval)<(TRE_buffer). Note that
+# larger regrid intervals will result in larger file sizes because you
+# will be using fine grids where they aren't needed, but lower regrid
+# intervals will take longer to compute since you are constantly
+# redefining the grid hierarchy
+regrid_interval := 10
+#regrid_interval := 20
+#regrid_interval := 40
+
+# the minimum level beyond which regridding can occur (in other words,
+# level 1..regrid_min_lev are fixed in time). Default is 2
+regrid_min_lev := 2
+
+# The list of AMR variables to save to SDF (the 2 refers to the time level)
+save_2_vars := [ "phi" "pi" ]
+
+# what to prepend to the SDF output files
+save_tag := "axi_AMR_"

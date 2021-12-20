@@ -1,0 +1,55 @@
+#########################################################################
+# System parameters 
+#########################################################################
+
+system parameter int memsiz := 250000000
+#system parameter int memsiz := 250000000
+
+### Note: these values are defined here, but are redefined in id0, id1, ...
+
+# Grid size 
+parameter float pmin     := 0
+parameter float pmax     := 5 
+parameter float zmin     := -5 
+parameter float zmax     := 5 
+
+#########################################################################
+# Coordinate grids
+#########################################################################
+
+rec coordinates t,p,z
+
+uniform rec grid g1 [1:Np][1:Nz] {pmin:pmax}{zmin:zmax}
+
+# Defined at 0,1 since we use a Crank-Nicholson method
+float gfunc   on g1 at 0,1 {out_gf = 1}
+
+#########################################################################
+# Equations of Motion
+#########################################################################
+
+residual gfunc {
+      [1:Np][1:Nz] := <1>gfunc[0][0] = 1.0;
+               }
+
+#########################################################################
+# Initializations
+#########################################################################
+
+# RNPL-generated initializations
+#initialize gfunc { [1:Np][1:Nz]:= exp(-((p)^2+(z)^2)) } 
+initialize gfunc { [1:Np][1:Nz]:= 1.0 } 
+
+# Note: if some of your grid functions are manually initialized, 
+# the others MUST be initialized using 'auto initialize'
+auto initialize gfunc
+
+#########################################################################
+# Updates
+#########################################################################
+
+looper iterative
+
+# Calculate total charge by integrating the charge density over the domain
+trap_rnpl.inc gfuncint updates gfunc
+  HEADER dp, dz, gfunc, p

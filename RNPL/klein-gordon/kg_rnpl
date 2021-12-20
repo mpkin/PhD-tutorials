@@ -1,0 +1,109 @@
+############################################################
+# RNPL program to solve the 1d Klein-Gordon equation 
+# 
+#    -phi_tt + phi_xx - m^2 phi = 0
+#
+# recast in first order form 
+#
+#    pi := phi_t
+#    lambda := phi_x
+#
+# so the system of equations is
+#
+#    pi = phi_t
+#    lambda_t = pi_x
+#   -pi_t + lambda_x - m^2*phi = 0 
+# 
+# The program uses Crank-Nicholson differencing with 
+# (implicit) ingoing/outgoing radiation conditions, using 
+# O(h^2) forward and backwards differences, at the boundaries
+# 
+# Initial data is a Gaussian
+#
+# This is a modified version of w1dcn
+#
+############################################################
+
+system parameter int memsiz := 1000000
+
+parameter float xmin       := 0.0
+parameter float xmax       := 1.0
+
+parameter float mass       := 0.0
+
+rect coordinates t, x
+
+uniform rect grid g1 [1:Nx] {xmin:xmax}
+
+float phi    on g1 at 0,1 {out_gf = 1}
+float pi     on g1 at 0,1 {out_gf = 1}
+float lambda on g1 at 0,1 {out_gf = 1}
+
+#-----------------------------------------------------------
+# FINITE DIFFERENCE OPERATOR DEFINITIONS
+#-----------------------------------------------------------
+
+# Crank Nicholson time derivative operator
+operator DCN(f,t) := (<1>f[0] - <0>f[0]) / dt  
+
+# Forward time averaging operator
+operator AVG(f,t) := (<1>f[0] + <0>f[0]) / 2
+
+# O(h^2) centred spatial derivative operator
+operator D0(f,x) := (<0>f[1] - <0>f[-1]) / (2*dx)
+
+# O(h^2) backwards spatial derivative operator
+operator DB(f,x) := (3*<0>f[0] - 4*<0>f[-1] + <0>f[-2]) / (2*dx)
+
+# O(h^2) forwards spatial derivative operator
+operator DF(f,x) := (-3*<0>f[0] + 4*<0>f[1]  - <0>f[2]) / (2*dx)
+
+#-----------------------------------------------------------
+# DIFFERENCE EQUATION DEFINITIONS
+#-----------------------------------------------------------
+
+evaluate residual phi
+{ 
+   [1:1]    := <1>phi[0]  = 0;
+   [2:Nx-1] := DCN(phi,t) = AVG(pi,t);
+   [Nx:Nx]  := <1>phi[0]  = 0;
+}
+
+evaluate residual lambda 
+{ 
+   [1:1]    := <1>lambda[0]  = 0;
+   [2:Nx-1] := DCN(lambda,t) = AVG(D0(pi,x),t);
+   [Nx:Nx]  := <1>lambda[0]  = 0;
+}
+
+evaluate residual pi
+{ 
+   [1:1]    := <1>pi[0]  = 0;
+   [2:Nx-1] := DCN(pi,t) = AVG(D0(lambda,x),t)-mass^2*AVG(phi,t);
+   [Nx:Nx]  := <1>pi[0]  = 0;
+}
+
+#-----------------------------------------------------------
+# INITIALIZATION STATEMENTS 
+#-----------------------------------------------------------
+
+initialize phi
+{
+   [1:Nx] := exp(-x^2)
+}
+
+initialize lambda 
+{
+   [1:Nx] := -2*x*exp(-x^2)
+}
+
+initialize pi
+{
+   [1:Nx] := 0
+}
+
+auto initialize phi, lambda, pi
+
+looper iterative
+
+auto update phi, lambda, pi

@@ -1,0 +1,51 @@
+#! /bin/sh
+
+#=======================================================================
+#
+# mygnuplot <datafile1> [ <datafile2> ... <datafile6> ]
+#
+# Given up to 6 data files, makes a basic plot using GNUplot. The data
+# files should only have 2 columns each; additional columns not plotted
+#
+#=======================================================================
+
+# Usage instructions
+Usage=" Usage: mygnuplot <datafile1> [ <datafile2> ... <datafile6> ]"
+
+# Plot the data based on number of arguments
+# NOTE: to scale data within gnuplot, you can use something like:
+#                 plot "data.dat" using 1:(2*$2)
+
+case $# in
+      1) pltcmd="plot \"$1\" using 1:2 w lp ls 1" ;;
+      2) pltcmd="plot \"$1\" using 1:2 w lp ls 1, \"$2\" using 1:2 w lp ls 2" ;;
+      3) pltcmd="plot \"$1\" using 1:2 w lp ls 1, \"$2\" using 1:2 w lp ls 2, \"$3\" using 1:2 w lp ls 3" ;;
+      4) pltcmd="plot \"$1\" using 1:2 w lp ls 1, \"$2\" using 1:2 w lp ls 2, \"$3\" using 1:2 w lp ls 3, \"$4\" using 1:2 w lp ls 4" ;;
+      5) pltcmd="plot \"$1\" using 1:2 w lp ls 1, \"$2\" using 1:2 w lp ls 2, \"$3\" using 1:2 w lp ls 3, \"$4\" using 1:2 w lp ls 4, \"$5\" using 1:2 w lp ls 5" ;;
+      6) pltcmd="plot \"$1\" using 1:2 w lp ls 1, \"$2\" using 1:2 w lp ls 2, \"$3\" using 1:2 w lp ls 3, \"$4\" using 1:2 w lp ls 4, \"$5\" using 1:2 w lp ls 5, \"$6\" using 1:2 w lp ls 6" ;;
+      *) echo $Usage ;
+         exit 1;; 
+esac
+
+gnuplot<<END
+set terminal png notransparent enhanced font ',15' size 800,600
+set title "$1"
+set output "$1.png"
+set ticslevel 0.5
+
+set style line 1 lt 1 lc rgb "#FF0000" lw 2 pt 7  ps 0.2
+set style line 2 lt 1 lc rgb "#FFB600" lw 2 pt 11 ps 0.2
+set style line 3 lt 1 lc rgb "#0083FF" lw 2 pt 9  ps 0.2
+set style line 4 lt 1 lc rgb "#308e29" lw 2 pt 8  ps 0.2
+set style line 5 lt 1 lc rgb "#32cd32" lw 2 pt 5  ps 0.2
+set style line 6 lt 1 lc rgb "#800080" lw 2 pt 4  ps 0.2
+
+#set xlabel "x"
+#set ylabel "y"
+#set yrange [0:10]
+#set xrange [0:12]
+#set key left bottom
+set format y "%12f"
+set grid
+$pltcmd
+END

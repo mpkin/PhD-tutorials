@@ -1,0 +1,78 @@
+#!/bin/bash
+
+#=======================================================================
+#
+# img2vid <output_filename.mp4>
+#
+# This is a simple script that uses ffmpeg to convert jpeg files to mp4.
+# Run this script in the same directories as the jpegs. It is assumed
+# the jpegs have the DV default naming format: scr_save_%000d.jpeg
+#
+# NOTE: This script assumes you have properly installed libx264 and an
+# updated version of ffmpeg. If not, you can still generate videos using
+# the following command:
+#
+# ffmpeg -framerate 25 -i scr_save_%000d.jpeg -vb 5000k -vcodec mpeg4 -pix_fmt yuv420p output.mp4
+#
+# but the file size will be larger
+#
+#=======================================================================
+
+#----------------------------------------------------------
+# Functions & Usage Instructions
+#----------------------------------------------------------
+
+# prints some usage instructions
+
+Usage=" USAGE: img2vid <output_filename.mp4>"
+
+function note {
+printf "\n \e[01;44m Important Note \e[0m\n"
+printf "  The program 'ffmpeg' can only animate jpegs that have\n"
+printf "  a resolution that is (even x even).\n\n"
+}
+
+case $# in
+      1) ;;
+      *) echo $Usage ; instructions ; note ; exit 1 ;;
+esac
+
+#----------------------------------------------------------
+# Main Program
+#----------------------------------------------------------
+
+# warn the user about the resolution requirements
+read -r -p "Press y to continue, N to exit: " choice
+case "$choice" in
+  y)   ;;
+  *)   exit;;
+esac
+
+# test whether the user already appended the mp4 extension
+case "$1" in
+  *.mp4)
+        # it's already there
+        filename=$1;;
+  *)
+        # it's not
+        filename="$1.mp4"
+        ;;
+esac
+
+# generate
+ffmpeg -framerate 25 -i scr_save_%000d.jpeg -c:v libx264 -profile:v high -crf 10 -pix_fmt yuv420p $filename
+
+case "$?" in
+  0) ;;
+  1) rm $filename;
+     exit;;
+esac
+
+printf "\n \e[01;42m Success! \e[0m  "
+read -r -p "Would you like to delete the jpegs now? (y/N): " choice
+
+case "$choice" in
+  y)   rm scr_save_*.jpeg;;
+  *)   exit;;
+esac
+
