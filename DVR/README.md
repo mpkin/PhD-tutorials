@@ -17,7 +17,7 @@ Start by invoking DVR on the remote machine. For example, it is installed on `bh
 > DVR
 ```
 
-###. 2. Load data in DVR
+### 2. Load data in DVR
 Next you will need to load data into DVR. Assuming the data is located on the remote machine on which DVR is running, you can run (now on the *local* machine):
 ```
 > dvrcomm load "/path/to/data/2d_example.sdf" > example;
