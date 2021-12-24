@@ -40,3 +40,10 @@ diffssh() {
     *) echo " Syntax: diffssh user@remote_host remote_file.txt local_file.txt"; return 1;;
   esac
 }
+
+# swap the names of two files
+swapnames() {
+  mv $1 $1.tmp
+  mv $2 $1
+  mv $1.tmp $2
+}
