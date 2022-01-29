@@ -6,7 +6,7 @@ The code in this directory illustrates basic functionality of the PAMR (Parallel
 3. `integration` -- an illustration of how to integrate quantities over arbitrary AMR levels (also uses `RNPL`)
 4. `regrid_scripts.txt` -- a tutorial on using regrid scripts
 
-In `pamr-installguide.md` and `pamr-installguide-CC.md` I provide instructions on how to install the PAMR libraries on Ubuntu and on the ComputeCanada systems.
+In `pamr-installguide.md` and `pamr-installguide-CC.md`, I provide instructions on how to install the PAMR libraries on Ubuntu and on the ComputeCanada systems.
 
 Further reading:
 ```

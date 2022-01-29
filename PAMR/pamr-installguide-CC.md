@@ -1,17 +1,14 @@
 Installating PAMR on ComputeCanada Systems
 ==========================================
 
-This document serves as a guide to install PAMR on the ComputeCanada systems such as Graham and Cedar. In the following, I will make the following assumptions:
+This document serves as a guide to install PAMR on the ComputeCanada systems such as Graham and Cedar. In the following, I will make the assumptions:
 * you are using the 2020 software environment (it can be loaded using `module load StdEnv/2020`)
-* the directory $HOME/install already exists and has the proper permissions
+* the directory `$HOME/install` already exists and has the proper permissions
 * RNPL and all prerequisites have already been installed
 
-Note that the PAMR configuration file will check for certain RNPL libraries, such as `bbhutil`. It may be the case that RNPL and associated libraries are already installed (for example, in `/home/matt`).
+Note that the PAMR configuration file will check for certain RNPL libraries, such as `bbhutil`. It may be the case that RNPL and associated libraries are already installed (for example, somewhere in `/home/matt`).
 
-The PAMR tarball can be downloaded from the group's FTP site: ftp://laplace.phas.ubc.ca/pub/pamr/
-
-1. Download PAMR & Setup Environment
-------------------------------------
+# 1. Download PAMR & Setup the Environment
 
 Download the PAMR tarball:
 ```
@@ -73,10 +70,9 @@ export LDFLAGS="-L${MPI_HOME}/lib -L/home/$USER/install/lib"
 export PATH="$PATH:/home/$USER/install/bin"
 ```	
 
-1. Install PAMR
----------------
+# 2. Install PAMR
 
-Proceed with installing the software to $HOME/install:
+Proceed with installing the software to `$HOME/install`:
 ```
 cd /tmp/pamr
 ./configure --prefix=$HOME/install > configure.output
