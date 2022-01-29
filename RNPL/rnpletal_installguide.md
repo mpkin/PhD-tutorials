@@ -3,7 +3,7 @@ Installating RNPL et al on Ubuntu
 
 This document serves as a guide to install RNPL, XVS, and DV on Ubuntu-based systems. The instructions here are a modified version of the (outdated?) guide found [here](http://laplace.physics.ubc.ca/Doc/rnpletal/rnpletal-ubuntu.html).
 
-# 0. Update the System
+### 0. Update the System
 
 In the following I will assume that your system has been fully upgraded:
 
@@ -14,7 +14,7 @@ sudo apt full-upgrade  # Installs updates; may also remove some packages, if nee
 sudo apt autoremove    # Removes any old packages that are no longer needed
 ```
 
-# 1. Install Software Prerequisites
+### 1. Install Software Prerequisites
 
 From the command line, install the following packages:
 
@@ -22,7 +22,7 @@ From the command line, install the following packages:
 sudo apt-get install gcc gfortran perl flex bison xutils-dev libx11-dev mesa-common-dev libglu1-mesa-dev mesa-utils libjpeg62 libjpeg62-dev libxext-dev libtiff-dev libtiff-opengl xfstt t1-xfree86-nonfree ttf-xfree86-nonfree ttf-xfree86-nonfree-syriac xfonts-75dpi xfonts-100dpi xfonts-100dpi-transcoded xfonts-75dpi-transcoded ffmpeg libxpm-dev libxpm4
 ```
 
-# 2. Set Environment Variables
+### 2. Set Environment Variables
 
 Set the following environment variables in `/etc/profile`:
 
@@ -53,7 +53,7 @@ export XVSHOST=$HOSTNAME
 export DVHOST=$HOSTNAME
 ```  
 
-# 3. Install Helvetica Fonts
+### 3. Install Helvetica Fonts
 
 The software needs Helvetica to display properly:
 
@@ -66,7 +66,7 @@ sudo mv Helvetica.ttf /usr/share/fonts/truetype/myfonts/.
 sudo fc-cache -f -v /usr/share/fonts/truetype/myfonts
 ```
 
-# 4. Download and Install RNPL
+### 4. Download and Install RNPL
 
 Assuming you would like to install the software in `/usr/local`:
 
@@ -81,7 +81,7 @@ export F77=gfortran
 ./Install.gnu /usr/local >> & install.log
 ```
 
-# 5. Download and Install XForms
+### 5. Download and Install XForms
 
 Assuming you are installing `xforms-1.0`:
 
@@ -105,7 +105,7 @@ vi /usr/share/X11/config/Imake.tmpl
 ```
 Then on line 1082 and 1084 of `Imake.tmpl`, change the `cq` and `clq` to `r`
 
-# 6. Download and Install XVS
+### 6. Download and Install XVS
 
 Download and install the software:
 
@@ -123,7 +123,7 @@ export LIB_PATHS="/usr/lib/x86_64-linux-gnu /usr/lib"
 make install >> & install.log
 ```
 
-# 7. Download and Install DV
+### 7. Download and Install DV
 
 Download and install the software:
 

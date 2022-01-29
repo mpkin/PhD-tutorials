@@ -8,7 +8,7 @@ This document serves as a guide to install PAMR on the ComputeCanada systems suc
 
 Note that the PAMR configuration file will check for certain RNPL libraries, such as `bbhutil`. It may be the case that RNPL and associated libraries are already installed (for example, somewhere in `/home/matt`).
 
-# 1. Download PAMR & Setup the Environment
+### 1. Download PAMR & Setup the Environment
 
 Download the PAMR tarball:
 ```
@@ -23,7 +23,7 @@ You also need to set the proper environment variables. Source a file containing 
 # by default, this version uses the 2020 environment
 module load StdEnv/2020
 
-export MYHOME="/home/$USER/install"
+export MYHOME="/home/${USER}/install"
 
 # MPI compiler location
 export MPI_HOME="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/intel2020/openmpi/4.0.3"
@@ -33,13 +33,13 @@ export CC="${MPI_HOME}/bin/mpicc"
 export CFLAGS='-O3'
 export CFLAGS_NOOPT=' '
 export CCFLAGS='-O3  '
-export CCCFLAGS="-I${MPI_HOME}/include -I/home/$USER/install/include"
-export CCLFLAGS="-I${MPI_HOME}/lib -L/home/$USER/install/lib"
+export CCCFLAGS="-I${MPI_HOME}/include -I/home/${USER}/install/include"
+export CCLFLAGS="-I${MPI_HOME}/lib -L/home/${USER}/install/lib"
 
 # C++ compiler
 export CXX="${MPI_HOME}/bin/mpicc"
 export CXXFLAGS=' '
-export CPPFLAGS="-I${MPI_HOME}/include -I/home/$USER/install/include"
+export CPPFLAGS="-I${MPI_HOME}/include -I/home/${USER}/install/include"
 
 # C preprocessor
 export CCF77LIBS='-lsvml -lifcore -lm'
@@ -49,11 +49,11 @@ export FC="${MPI_HOME}/bin/mpifort"
 export F77="${MPI_HOME}/bin/mpifort"
 export FFLAGS='-O3'
 export F77FLAGS='-O3'
-export F77LFLAGS="-L${MPI_HOME}/lib -L/home/$USER/install/lib"
+export F77LFLAGS="-L${MPI_HOME}/lib -L/home/${USER}/install/lib"
 export F90="${MPI_HOME}/bin/mpif77"
 export F90FLAGS='-O3'
 export F90CFLAGS='-c'
-export F90LFLAGS='-O3 -L${MPI_HOME}/lib -L/home/$user/install/lib'
+export F90LFLAGS='-O3 -L${MPI_HOME}/lib -L/home/${USER}/install/lib'
 
 # RNPL compiler
 export RNPL_RNPL="rnpl"
@@ -66,11 +66,11 @@ export RNPL_FLIBS="-lrnpl -lxvs"
 export BBH_CHECK_DEFAULTS="NONE"
 export LIB_PATHS="$MYHOME/lib ${MPI_HOME}/lib"
 export INCLUDE_PATHS="$MYHOME/include /usr/local/include ${MPI_HOME}/include"
-export LDFLAGS="-L${MPI_HOME}/lib -L/home/$USER/install/lib"
-export PATH="$PATH:/home/$USER/install/bin"
+export LDFLAGS="-L${MPI_HOME}/lib -L/home/${USER}/install/lib"
+export PATH="$PATH:/home/${USER}/install/bin"
 ```	
 
-# 2. Install PAMR
+### 2. Install PAMR
 
 Proceed with installing the software to `$HOME/install`:
 ```

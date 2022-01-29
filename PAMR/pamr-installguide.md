@@ -3,7 +3,7 @@ Installating PAMR on Ubuntu
 
 This document serves as a guide to install PAMR on Ubuntu-based systems. In the following, I will assume that RNPL and all prerequisites have already been installed. The PAMR tarball can be downloaded from the group's FTP site: ftp://laplace.phas.ubc.ca/pub/pamr/
 
-# 0. Update the System
+### 0. Update the System
 
 First make sure your system has been fully upgraded:
 ```
@@ -13,14 +13,14 @@ sudo apt full-upgrade  # Installs updates; may also remove some packages, if nee
 sudo apt autoremove    # Removes any old packages that are no longer needed
 ```
 
-# 1. Install MPI
+### 1. Install MPI
 
 Install OpenMPI and dependencies from the command line:
 ```
 sudo apt-get install openmpi-bin
 ```
 
-# 2. Install PAMR
+### 2. Install PAMR
 Proceed with installing the software to `/usr/local`:
 ```
 sudo -i
@@ -30,7 +30,7 @@ export CC=mpicc
 make
 ```
 
-# 3. Check PAMR Install
+### 3. Check PAMR Install
 
 To check that PAMR has been installed correctly you can try running the modified wave example:
 ```
