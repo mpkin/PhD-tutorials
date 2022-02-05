@@ -59,6 +59,7 @@ If you want live execution control, set a breakpoint and continue execution unti
 **NOTE**: you can add compiler/linker debug flags (such as `-g`) to the Makefile and turn off optimization options (such as by using `-O0`), but you should actively avoid these flags when *building* OpenMPI, since this would lead you to step into internal MPI functions which you probably don't want
 
 <br>
+
 ### Advanced MPI Debugging
 
 To debug MPI programs running on many cores/nodes, it is useful to use dedicated graphical debuggers such as GNU DDD or Arm DDT (as well as MPI profilers such as Arm MAP). Typically your jobs will run on remote servers but graphical programs are often very slow when trying to run through SSH + X11 forwarding. To deal with this we will use VNC to remotely connect to ComputeCanada's VDI and compute nodes.
