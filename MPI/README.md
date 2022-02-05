@@ -58,30 +58,28 @@ If you want live execution control, set a breakpoint and continue execution unti
 
 **NOTE**: you can add compiler/linker debug flags (such as `-g`) to the Makefile and turn off optimization options (such as by using `-O0`), but you should actively avoid these flags when *building* OpenMPI, since this would lead you to step into internal MPI functions which you probably don't want
 
-
+<br>
 ### Advanced MPI Debugging
 
 To debug MPI programs running on many cores/nodes, it is useful to use dedicated graphical debuggers such as GNU DDD or Arm DDT (as well as MPI profilers such as Arm MAP). Typically your jobs will run on remote servers but graphical programs are often very slow when trying to run through SSH + X11 forwarding. To deal with this we will use VNC to remotely connect to ComputeCanada's VDI and compute nodes.
 
 1. Install a VNC client on your machine
-
-  On Linux, I recommend TigerVNC. You can download the binary here: https://github.com/TigerVNC/tigervnc/releases
-  ``` 
-  tar xf tigervnc-1.12.0.x86_64.tar.gz
-  cd tigervnc-1.12.0.x86_64/usr/bin
-  ./vncviewer
-  ```
-  To connect to a specific server, you will need to adjust the settings accordingly. For example, on the ComputeCanada servers: https://docs.computecanada.ca/wiki/VNC#Linux
+    On Linux, I recommend TigerVNC. You can download the binary here: https://github.com/TigerVNC/tigervnc/releases
+    ``` 
+    tar xf tigervnc-1.12.0.x86_64.tar.gz
+    cd tigervnc-1.12.0.x86_64/usr/bin
+    ./vncviewer
+    ```
+    To connect to a specific server, you will need to adjust the settings accordingly. For example, on the ComputeCanada servers: https://docs.computecanada.ca/wiki/VNC#Linux
 
 2. Connect to a compute node
-
-   From a login node on the remote server:
-   ```
-   salloc --time=3:00:00 --cpus-per-task=4 --mem=16000 --account=def-username  # note 24 hour time limit applies
-   export XDG_RUNTIME_DIR=${SLURM_TMPDIR}
-   vncserver
-   ```
-   You will be prompted to set a VNC password (do not leave this blank). Select `n` when asked about a view-only password. The password can be changed with `vncpasswd`. After starting the server, you will be pointed to a log file in `~/.vnc`. Look at this file to determine the hostname and port of the instance
+    From a login node on the remote server:
+    ```
+    salloc --time=3:00:00 --cpus-per-task=4 --mem=16000 --account=def-username  # note 24 hour time limit applies
+    export XDG_RUNTIME_DIR=${SLURM_TMPDIR}
+    vncserver
+    ```
+    You will be prompted to set a VNC password (do not leave this blank). Select `n` when asked about a view-only password. The password can be changed with `vncpasswd`. After starting the server, you will be pointed to a log file in `~/.vnc`. Look at this file to determine the hostname and port of the instance
 
 3. Setup a SSH tunnel to the VNC server
 
