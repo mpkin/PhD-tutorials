@@ -74,6 +74,7 @@ To debug MPI programs running on many cores/nodes, it is useful to use dedicated
     ```
     To connect to a specific server, you will need to adjust the settings accordingly. For example, on the ComputeCanada servers: https://docs.computecanada.ca/wiki/VNC#Linux
 
+
 2. Connect to a compute node
     
     From a login node on the remote server:
@@ -84,13 +85,15 @@ To debug MPI programs running on many cores/nodes, it is useful to use dedicated
     ```
     You will be prompted to set a VNC password (do not leave this blank). Select `n` when asked about a view-only password. The password can be changed with `vncpasswd`. After starting the server, you will be pointed to a log file in `~/.vnc`. Look at this file to determine the hostname and port of the instance
 
-3. Setup a SSH tunnel to the VNC server
+
+3. Setup an SSH tunnel to the VNC server
 
    From your local machine, create an SSH tunnel to the compute node:
    ```
    # syntax: ssh user@host -L port:compute_node:port
    ssh mikin@graham.computecanada.ca -L 5902:gra796:5901
    ```
+
 
 4. Launch your VNC viewer (e.g. TigerVNC) and connect to the VNC server
 
@@ -100,15 +103,12 @@ To debug MPI programs running on many cores/nodes, it is useful to use dedicated
    ```
    then enter your VNC password. You should now be connected to a remote desktop
 
-   **NOTE**: modules are not loaded by default, so you may want to load the standard environment:
-   ```
-   module load StdEnv/2020
-   ```
 
-6. Debug with DDT
+5. Debug with DDT
 
    To get Arm DDT running, first load the relevant modules:
    ```
+   module load StdEnv/2020
    module load ddt-cpu
    export OMPI_MCA_pml=ob1
    ```
@@ -116,9 +116,10 @@ To debug MPI programs running on many cores/nodes, it is useful to use dedicated
    ```
    ddt program [arguments]
    ```
-   **NOTE**: if you want to run MPI code, you may have to change the default `mpirun` path in DDT (`which mpirun`)
+   **NOTE**: if you want to run MPI code, you may have to change the default `mpirun` path in DDT (find out the path with `which mpirun`)
    
    **NOTE**: it is assumed you have turn on the debug flags `-g` and turned off optimization in your compiled code
+
 
 6. Kill the VNC server
 
@@ -126,5 +127,5 @@ To debug MPI programs running on many cores/nodes, it is useful to use dedicated
    ```
    # on remote host
    vncserver -list
-   vncserver -kill :44
+   vncserver -kill :44  # for example
    ```

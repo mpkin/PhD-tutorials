@@ -1,0 +1,36 @@
+#! /bin/bash
+
+#=======================================================================
+#
+# cluster-usage
+#
+# Displays Slurm usage stats for users in a project. Assumes you only
+# care about CPU usage, not GPU. User values always add up to 1, and
+# group FairShare > 1 implies group usage exceeds the allocation.
+#
+# Note that on ComputeCanada systems, past usage is discounted with a
+# half-life of one week (i.e. usage more than a few weeks in the past
+# will have only a small impact on priority). Priority of jobs is
+# determined solely by the group FairShare level
+#
+#=======================================================================
+
+project=def-matt
+
+sshareP=`sshare -l -A ${project}_cpu -a --parsable`
+num_users=`echo "${sshareP}" | wc -l`; num_users=$((num_users-2))
+groupFS=`echo "${sshareP}" | sed -n 2p | cut -d '|' -f 9`
+group_percent=`echo "scale=4 ; 1.0/${groupFS}" | bc | awk '{printf "%f", $0}'`
+
+user_name=()
+user_percent=()
+padding="          "
+for (( i=3; i<=${num_users}+2; i++ ))
+do
+user_name[i]=`echo "${sshareP}" | sed -n ${i}p | cut -d '|' -f 2`
+user_percent[i]=`echo "${sshareP}" | sed -n ${i}p | cut -d '|' -f 7`
+user_pct=${user_percent[i]}
+printf "%s %s %s\n" "${user_name[i]}" "${padding:${#user_name[i]}}" "${user_percent[i]}"
+done
+
+printf "\n%s %s\n\n" "Group Fairshare:" "${group_percent}"
