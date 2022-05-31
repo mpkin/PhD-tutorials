@@ -51,7 +51,7 @@ fi
 title=`cat metadata.tmp | grep citation_title | cut -c40- | sed 's/...$//'`
 num_authors=`cat metadata.tmp | grep citation_author | wc -l`
 author=`cat metadata.tmp | grep -m1 citation_author | cut -c41- | sed 's/...$//'`
-doi=`cat metadata.tmp | grep citation_doi | cut -c38- | sed 's/...$//'`
+doi=`cat metadata.tmp | grep citation_doi | cut -c37- | cut -d'"' -f2`
 year=`cat metadata.tmp | grep citation_date | cut -c39- | sed 's/.........$//'`
 id=`cat metadata.tmp | grep citation_pdf_url | cut -c64- | sed 's/...$//'`
 url="https://arxiv.org/abs/${id}"
@@ -67,7 +67,11 @@ doi="https://dx.doi.org/$doi"
 
 # print to terminal window
 printf "\n"
-printf "[$author_short$year-$id_short]\n$title\n$author ($year)\n$url\n$doi"
+echo "[$author_short$year-$id_short]
+$title
+$author ($year)
+$url
+$doi"
 printf "\n\n"
 
 # attempt to copy the text using xclip
