@@ -80,7 +80,7 @@ wget ftp://laplace.physics.ubc.ca/pub/rnpletal/rnpletal.tar.gz
 tar zxf rnpletal.tar.gz
 cd rnpletal
 export F77=gfortran
-./Install.gnu /usr/local >> & install.log
+./Install.gnu /usr/local 2>&1 | tee -a install.log
 ```
 
 ### 5. Download and Install XForms
@@ -95,7 +95,7 @@ wget ftp://laplace.phas.ubc.ca/pub/xforms-1.0/xforms-1.0.tar.gz .
 tar zxf ./xforms-1.0.tar.gz
 cd xforms-1.0
 xmkmf -a
-make install >> & install.log
+make install 2>&1 | tee -a install.log
 #ln -s /usr/lib/libforms.so /usr/lib/libforms.so.2
 ```
 
@@ -121,8 +121,8 @@ cd xvs
 export CCF77LIBS="-lgfortran -lm"
 export F77=gfortran
 export LIB_PATHS="/usr/lib/x86_64-linux-gnu /usr/lib"
-./configure --prefix=/usr/local >> & install.log
-make install >> & install.log
+./configure --prefix=/usr/local 2>&1 | tee -a install.log
+make install 2>&1 | tee -a install.log
 ```
 
 ### 7. Download and Install DV
@@ -139,7 +139,7 @@ cd DV
 export CCF77LIBS="-lgfortran -lm"
 export F77=gfortran
 export LIB_PATHS="/usr/lib/x86_64-linux-gnu /usr/lib"
-./configure --prefix=/usr/local >> & install.log
-make install >> & install.log
+./configure --prefix=/usr/local 2>&1 | tee -a install.log
+make install 2>&1 | tee -a install.log
 ```
 
