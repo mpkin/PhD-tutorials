@@ -79,7 +79,7 @@ Globus also has a CLI implemented in Python. Here I will use Python's `venv` to 
     > ep2=<ID goes here>
     ```
 
-3. You can perform various actions for each endpoint:
+3. You can perform various actions for each endpoint
 
     List the files and directories:
     ```
