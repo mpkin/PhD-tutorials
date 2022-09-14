@@ -1,4 +1,4 @@
-### Slurm
+# Slurm 
 
 Get the specs of a particular Graham/Cedar node
 ```
@@ -10,7 +10,7 @@ Get the specs of all nodes
 sinfo --Node --long
 ```
 
-Check available space for your group
+Check available space for your group (DRAC/Compute Canada clusters)
 ```
 diskusage_report
 ```
