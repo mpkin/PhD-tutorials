@@ -3,8 +3,6 @@ Installating RNPL et al on Ubuntu
 
 This document serves as a guide to install RNPL, XVS, and DV on Ubuntu-based systems. The instructions here are a modified version of the (outdated?) guide found [here](http://laplace.physics.ubc.ca/Doc/rnpletal/rnpletal-ubuntu.html).
 
-NOTE: at present these instructions do not seem to get XVS working properly (BadDrawable error), though DV works fine
-
 ### 0. Update the System
 
 In the following I will assume that your system has been fully upgraded:
