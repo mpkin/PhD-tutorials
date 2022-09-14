@@ -8,4 +8,4 @@ Various scripts that may be useful for research purposes.
 4. `img2vid` -- generates animated `mp4` from a series of `jpeg` files (useful for animating DV output)
 5. `mygnuplot` -- basic plotting script for 1D data using `gnuplot`
 6. `mygnuplotd` -- interactive plotting script for 1D data using `gnuplot`
-7. `screenrec` -- basic screen recording script using `ffmpeg` (useful for capturing DV visualizations)
+7. `screenrec` -- basic screen recording script using `ffmpeg`

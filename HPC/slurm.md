@@ -10,11 +10,6 @@ Get the specs of all nodes
 sinfo --Node --long
 ```
 
-Check available space for your group (DRAC/Compute Canada clusters)
-```
-diskusage_report
-```
-
 Cancel one job
 ```
 scancel <jobid>
@@ -73,4 +68,7 @@ echo $PATH
 srun ./w1dcn id0
 ```
 
-
+Check available space for your group (on DRAC/Compute Canada clusters)
+```
+diskusage_report
+```
