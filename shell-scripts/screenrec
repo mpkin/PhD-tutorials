@@ -1,0 +1,38 @@
+#! /bin/bash
+
+#=======================================================================
+#
+# screenrec <output_filename.mp4>
+#
+# This is a simple script that uses ffmpeg to record the screen of a
+# selected window.
+#
+# NOTE: This script assumes you have xwininfo and ffmpeg installed
+#
+#=======================================================================
+
+case $1 in
+      *.mp4) ;;
+      *) echo " USAGE: screenrec <output_filename.mp4>" ; exit 1 ;;
+esac
+
+which xwininfo || { echo 'xwininfo not found. Exiting.' ; exit 1; }
+which ffmpeg || { echo 'ffmpeg not found. Exiting.' ; exit 1; }
+
+printf "\n Click on the target window to begin screen recording.\n
+ Press 'q' to stop recording after selecting the target window.\n"
+xwininfo > /tmp/windata.tmp
+
+height=`cat /tmp/windata.tmp | grep Height | cut -d' ' -f4`
+width=`cat /tmp/windata.tmp | grep Width | cut -d' ' -f4`
+xpos=`cat /tmp/windata.tmp | grep "Absolute upper-left X" | cut -d' ' -f7`
+ypos=`cat /tmp/windata.tmp | grep "Absolute upper-left Y" | cut -d' ' -f7`
+
+if [[ "$height $width $xpos $ypos" == *-* ]]; then
+  printf "\n ERROR: Invalid screen position detected! Is the target window hanging off of the screen?\n\n"
+  exit 1
+fi
+
+ffmpeg -f x11grab -video_size ${width}x${height} -framerate 18 -i :0.0+${xpos},${ypos} -vf format=yuv420p $1
+
+printf "\n File written to $1\n"
