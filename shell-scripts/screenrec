@@ -33,10 +33,11 @@ if [[ "$height $width $xpos $ypos" == *-* ]]; then
   exit 1
 fi
 
-# bug fix since ffmpeg cannot handle window resolutions that are (even)x(even)
+# bug fix since ffmpeg can only handle window resolutions that are (even)x(even)
 if [ $((height%2)) -ne 0 ]; then height=$((height+1)) ; fi
 if [ $((width%2)) -ne 0 ]; then width=$((width+1)) ; fi
 
 ffmpeg -f x11grab -video_size ${width}x${height} -framerate 18 -i :0.0+${xpos},${ypos} -vf format=yuv420p $1
 
 printf "\n File written to $1\n"
+du -hs ./$1

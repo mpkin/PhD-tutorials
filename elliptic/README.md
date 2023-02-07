@@ -1,9 +1,10 @@
 # elliptic-solver
 
-The code in this directory solves elliptic differential equations in Fortran using three algorithms:
+The code in this directory solves elliptic differential equations in Fortran using several algorithms:
 1. Jacobi iteration
 2. Gauss-Seidel relaxation
 3. Successive over-relaxation
+4. Line relaxation
 
 References:
 ```
