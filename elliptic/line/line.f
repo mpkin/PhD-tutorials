@@ -132,7 +132,7 @@ c     Boundary condition @ z=-infty
 
 c-----------------------------------------------------------------------
 c
-c     relax: solves a 1D BVP using line relaxation via LAPACK,
+c     relax: solves a 1D BVP using zebra line relaxation via LAPACK,
 c     assuming a 5-point stencil for the Laplacian
 c
 c-----------------------------------------------------------------------
