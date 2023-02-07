@@ -1,0 +1,82 @@
+#-----------------------------------------------------
+# runtime parameters
+
+echo_params := 1
+pamr_trace_lev := 0
+MG_trace := 2
+MG_DV_trace := 0
+evo_trace := 2
+evo_DV_trace := 0
+ID_DV_trace := 0
+
+max_lev := 1
+save_ivec := 1-*/1
+base_shape := [33 65]
+base_bbox := [0 2 -2 2]
+min_width := [5 9]
+lambda := 0.01
+rho_sp := 2
+rho_tm := 2
+
+gdm_method := 1
+id_method := 0
+skip_frg := 1
+evo_ssc := 0
+io_node := 0
+cls_merge_dist := 4
+cls_method := 0
+cls_align_mode := 1
+
+steps := 1
+evo_max_iter := 100
+evo_min_iter := 1
+evo_tol := 1e-2
+
+# the minimum grid size for the coarsest level in the MG hierarchy
+min_mg_cwidth := [5 9]
+# if the residual returned by the hook function app MG residual is less than or
+# equal to MG_tol, the equations are considered solved
+MG_tol := 1e-3
+# currently AMRD “solves” the coarsest grid equations using relaxation. The
+# parameter MG crtol specifies how much the residual on the coarsest level
+# should be reduced by (relative to the current next-to-coarsest residual) for
+# the coarse grid problem to be considered solved
+MG_crtol := 1e-3
+# an “under-relaxation” parameter. The residuals driving the RHS’s of the
+# coarser grid differential operators are multiplied by MG_w0, and
+# correspondingly the coarse grid corrections are multiplied by 1/MG_w0 before
+# being applied to the finer level. A value of MG_w0 on the order of 0.9 to
+# 0.95 is useful for certain PDEs
+MG_w0 := 1.0
+# experimental... leave at the default for now
+MG_extrap_method := 0
+# a “correction” to apply to the extrapolation of MG variables on the coarser
+# levels during a constrained evolution; see the docs
+MG_eps_c := 1.0
+# number of vcycles to perform:
+MG_max_iter := 50
+MG_min_iter := 1
+MG_max_citer := 50
+# number of CGC sweeps
+MG_pre_swp := 3
+MG_pst_swp := 3
+
+TRE_max := 0.01
+num_TRE_vars := 0
+TRE_buffer := 4
+TRE_ibc_buffer := 4
+TRE_ibcp_buffer := 0
+regrid_interval := 8
+TRE_norm := 1
+regrid_script := 0
+regrid_script_name = "test.rgs"
+np1_initial_guess := 1
+tn_eps_diss := 0.10
+rg_eps_diss := 0.25
+diss_all_past := 1
+
+num_save_2_vars := 1
+save_2_vars := [ "V" ]
+
+save_tag := "pamr_"
+#-----------------------------------------------------

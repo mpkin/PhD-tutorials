@@ -1,0 +1,49 @@
+#-----------------------------------------------------
+# fixed parameters
+
+app_name := ["Multigrid Example Code"]
+
+dim := 2
+t0 := 0
+num_evo_tl := 2
+ic_n := 2
+
+num_hyperbolic_vars := 0
+
+num_elliptic_vars := 1
+elliptic_vars := ["V"]
+
+num_AMRH_work_vars := 0
+num_MGH_work_vars := 0
+
+ghost_width := [2 2]
+
+num_amr_inject := 0
+
+num_amr_sync := 0
+
+num_amr_interp4 := 0
+
+num_amr_transfer4 := 1
+amr_transfer4 := [ "V" ]
+
+# list of variables that will be restricted to coarser levels in the MG hierarchy via half-weight restriction
+num_mg_hw_restr := 1
+mg_hw_restr := [ "V" ]
+
+# list of variables which need to have their ghost regions synchronized after every smoothing sweep
+num_mg_sync := 1
+mg_sync := [ "V" ]
+
+# list of variables that will have linearly interpolated coarse grid corrections applied during the v-cycle
+num_mg_interp2 := 1
+mg_interp2 := [ "V" ]
+
+num_interp_AMR_bdy_vars := 1
+interp_AMR_bdy_vars := [ "V" ]
+interp_AMR_bdy_order := 4
+
+num_tn_diss_vars := 0
+num_rg_diss_vars := 1
+rg_diss_vars := [ "V" ]
+#-----------------------------------------------------
