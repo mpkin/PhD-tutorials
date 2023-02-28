@@ -11,7 +11,7 @@ page](http://laplace.physics.ubc.ca/Group/Software.html).
 * **HPC** -- various tutorials for using the UBC ARC and DRAC/Compute Canada HPC platforms
 * **MPI** -- a communication protocol for parallel programming in various languages
 * **PAMR** -- a set of libraries for solving PDEs using parallel adaptive mesh refinement
-* pFUnit -- a unit testing framework for Fortran
+* **pFUnit** -- a unit testing framework for Fortran
 * **RNPL** -- a specialized language and compiler for solving PDEs with finite-differences
 * **elliptic** -- a basic implementation of several algorithms for solving elliptic PDEs  
 * **interpolation** -- a basic implementation of Neville's algorithm for polynomial interpolation
