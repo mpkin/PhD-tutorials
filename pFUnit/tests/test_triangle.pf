@@ -1,0 +1,43 @@
+@test
+subroutine test_triangle()
+use triangle_mod
+use funit
+
+   ! should pass this one
+   @assertEqual(5., hypo(3.,4.))
+   
+end subroutine test_triangle
+
+@test
+subroutine test_triangle2()
+use triangle_mod
+use funit
+
+   ! should fail this one
+   @assertTrue(6. == hypo(3.,4.))
+   
+end subroutine test_triangle2
+
+@test
+subroutine test_triangle3()
+use triangle_mod
+use funit
+
+   ! should fail this one with a message
+   @assertTrue(0. == hypo(3.,4.), message='intentionally failing test')
+   
+end subroutine test_triangle3
+
+@test
+subroutine test_triangle4()
+use triangle_mod
+use funit
+   
+   real, parameter :: expected = 5.
+
+   ! should pass this one
+   @assertEqual(expected, 5.1, tolerance=0.1)
+   ! should fail this one
+   @assertEqual(expected, 5.2, tolerance=0.1)
+
+end subroutine test_triangle4
