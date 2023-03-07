@@ -11,8 +11,8 @@ ID_DV_trace := 0
 
 max_lev := 1
 save_ivec := 1-*/1
-base_shape := [33 65]
-base_bbox := [0 2 -2 2]
+base_shape := [65 129]
+base_bbox := [0 10 -10 10]
 min_width := [5 9]
 lambda := 0.01
 rho_sp := 2
@@ -36,12 +36,12 @@ evo_tol := 1e-2
 min_mg_cwidth := [5 9]
 # if the residual returned by the hook function app MG residual is less than or
 # equal to MG_tol, the equations are considered solved
-MG_tol := 1e-3
+MG_tol := 1e-10
 # currently AMRD “solves” the coarsest grid equations using relaxation. The
 # parameter MG crtol specifies how much the residual on the coarsest level
 # should be reduced by (relative to the current next-to-coarsest residual) for
 # the coarse grid problem to be considered solved
-MG_crtol := 1e-3
+MG_crtol := 1e-6
 # an “under-relaxation” parameter. The residuals driving the RHS’s of the
 # coarser grid differential operators are multiplied by MG_w0, and
 # correspondingly the coarse grid corrections are multiplied by 1/MG_w0 before
@@ -54,7 +54,7 @@ MG_extrap_method := 0
 # levels during a constrained evolution; see the docs
 MG_eps_c := 1.0
 # number of vcycles to perform:
-MG_max_iter := 50
+MG_max_iter := 500
 MG_min_iter := 1
 MG_max_citer := 50
 # number of CGC sweeps

@@ -70,7 +70,7 @@ clean:
 	/bin/rm *.out *.dat *.png *.mod > /dev/null 2>&1
 	/bin/rm gfuni0.inc globals.inc other_glbs.inc sys_param.inc > /dev/null 2>&1
 	/bin/rm *.sdf > /dev/null 2>&1
-	/bin/rm ./data/* > /dev/null 2>&1
+	/bin/rm -rf data > /dev/null 2>&1
 	/bin/rm out*.pdf > /dev/null 2>&1
 
 vclean:

@@ -38,6 +38,38 @@ c-----------------------------------------------------------------------
       end do
       end do
 
+      ! Exact solution
+      do i=1,Np
+      do j=1,Nz
+        if ((i .EQ. 1) .AND. (j .EQ. Np)) then
+          Vx(i,j) = -sqrt(0.2D1)*Q*pi**(-0.3D1/0.2D1)/sigma/0.4D1
+        else
+          Vx(i,j) = -1d0/(4d0*pi)*Q/sqrt(p(i)**2d0+z(j)**2d0)
+     &    *erf(sqrt(p(i)**2d0+z(j)**2d0)/(sqrt(2d0)*sigma))
+        end if
+      end do
+      end do
+
+      ! Boundary condition @ p=0
+      do j=1,Nz
+        V(1,j) = Vx(1,j)
+      end do
+
+      ! Boundary condition @ p=pmax
+      do j=1,Nz
+        V(Np,j) = Vx(Np,j)
+      end do
+
+      ! Boundary condition @ z=zmax
+      do i=1,Np
+        V(i,Nz) = Vx(i,Nz)
+      end do
+
+      ! Boundary condition @ z=zmin
+      do i=1,Np
+        V(i,1) = Vx(i,1)
+      end do
+
       return
       end subroutine
 
@@ -134,8 +166,7 @@ c-----------------------------------------------------------------------
 
 c-----------------------------------------------------------------------
 c
-c     relax: applies alternating-direction zebra line relaxation using
-c            Lapack 'dgtsv' solver
+c     relax: applies Gauss-Seidel relaxation
 c
 c-----------------------------------------------------------------------
       subroutine relax(V,V_rhs,cmask,phys_bdy,p,z,norm,Np,Nz)
@@ -187,26 +218,6 @@ c-----------------------------------------------------------------------
       end do
       end do
 
-      ! Boundary condition @ p=0
-      do j=1,Nz
-        V(1,j) = Vx(1,j)
-      end do
-
-      ! Boundary condition @ p=infty
-      do j=1,Nz
-        V(Np,j) = Vx(Np,j)
-      end do
-
-      ! Boundary condition @ z=infty
-      do i=1,Np
-        V(i,Nz) = Vx(i,Nz)
-      end do
-
-      ! Boundary condition @ z=-infty
-      do i=1,Np
-        V(i,1) = Vx(i,1)
-      end do
-
       ! Compute difference from exact solution
       do i=1,Np
       do j=1,Nz
@@ -225,79 +236,20 @@ c-----------------------------------------------------------------------
         counter = 1
       end if
 
-      ! X-DIRECTION
-      ! Set up tridiagonal system. Note that indexing on 
-      ! lower diagonal is always (j-1) when implementing the 
-      ! jth equation
-      do l=0,1  ! zebra sweep
-      do i=2+l,Np-1-l,2
-        d(1)=1.0d0
-        du(1)=0.0d0
-        rhs(1)=V(i,1)
-        do j=2,Nz-1   ! using 5-point stencil:
-          dl(j-1) =  0.1D1 / dz ** 2
-          d(j)    = -2d0 / dp ** 2d0 - 2d0 / dz ** 2d0
-          du(j)   = 0.1D1 / dz ** 2
-          rhs(j)  = f(i,j) + V_rhs(i,j)
-     #              - (V(i + 1,j)-V(i - 1,j))/p(i)/dp/0.2D1-(V
-     #              (i + 1,j) + V(i - 1,j)) / dp ** 2
-        end do
-        dl(Nz-1) = 0.0d0
-        d(Nz)    = 1.0d0
-        rhs(Nz)  = V(i,Nz)
-  
-        nrhs = 1
-        call dgtsv( Nz, nrhs, dl, d, du, rhs, Nz, info )
-  
-        do j=1,Nz
-          V(i,j)=rhs(j)
-        end do
-  
-      end do
-      end do
-
-      ! Y-DIRECTION
-      ! Set up tridiagonal system. Note that indexing on 
-      ! lower diagonal is always (j-1) when implementing the 
-      ! jth equation
-      do l=0,1  ! zebra sweep
-      do j=2+l,Nz-1-l,2
-        d(1)=1.0d0
-        du(1)=0.0d0
-        rhs(1)=V(1,j)
-        do i=2,Np-1   ! using 5-point stencil:
-          dl(i-1) = -0.1D1 / p(i) / dp / 0.2D1 + 0.1D1 / dp ** 2
-          d(i)    = -2d0 / dp ** 2d0 - 2d0 / dz ** 2d0
-          du(i)   = 0.1D1 / p(i) / dp / 0.2D1 + 0.1D1 / dp ** 2
-          rhs(i)  =  -(V(int(i),j + 1) + V(int(i),j - 1))
-     #               / dz ** 2 + f(int(i),j) + V_rhs(i,j)
-        end do
-        dl(Np-1) = 0.0d0
-        d(Np)    = 1.0d0
-        rhs(Np)  = V(Np,j)
-  
-        nrhs = 1
-        call dgtsv( Np, nrhs, dl, d, du, rhs, Np, info )
-  
-        do i=1,Np
-          V(i,j)=rhs(i)
-        end do
-  
-      end do
-      end do
-
-      ! Compute residual
+      ! Gauss-Seidel relaxation
       do i=2,Np-1
       do j=2,Nz-1
        if (cmask(i,j).eq.CMASK_ON) then
-        res =
-     &0.1D1 / p(i) * (V(i + 1,j) - V(i - 1,j)) / dp / 0.2D1 + (V(
-     &i + 1,j) - 0.2D1 * V(i,j) + V(i - 1,j)) / dp ** 2 + (V(i,j + 1) -
-     &0.2D1 * V(i,j) + V(i,j - 1)) / dz ** 2 - f(i,j) - V_rhs(i,j)
+        res = 
+     #0.1D1 / p(i) * (V(i + 1,j) - V(i - 1,j)) / dp / 0.2D1 + (V(i 
+     #+ 1,j) - 0.2D1 * V(i,j) + V(i - 1,j)) / dp ** 2 + (V(i,j + 1) - 0.
+     #2D1 * V(i,j) + V(i,j - 1)) / dz ** 2 - f(i,j)
+     # - V_rhs(i,j)
+        V(i,j) = V(i,j) - res/(-2/dp**2-2/dz**2)  ! Newton's method; see Matt's mexico06 notes
         norm = norm + res**2
         sum  = sum + 1
        end if
-      end do
+      end do 
       end do
       
       norm = sqrt(norm/sum)
