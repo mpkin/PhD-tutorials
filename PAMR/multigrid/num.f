@@ -166,7 +166,7 @@ c-----------------------------------------------------------------------
 
 c-----------------------------------------------------------------------
 c
-c     relax: applies Gauss-Seidel relaxation
+c     relax: applies Gauss-Seidel relaxation where cmask=CMASK_ON 
 c
 c-----------------------------------------------------------------------
       subroutine relax(V,V_rhs,cmask,phys_bdy,p,z,norm,Np,Nz)
