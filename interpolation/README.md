@@ -19,5 +19,5 @@ NUMERICAL RECIPES IN FORTRAN 77 (2nd edition)
 Press, Teukolsky, Vetterling & Flannery
 Cambridge University Press 1992
 
-Ch. 3: Interpolation and Extrapolation
+Ch. 3 - Interpolation and Extrapolation
 ```
