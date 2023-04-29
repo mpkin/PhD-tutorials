@@ -48,12 +48,12 @@ if [ $? -ne 0 ]
 fi
 
 # from the metadata file, retrieve the useful information
-title=`cat metadata.tmp | grep citation_title | cut -c40- | sed 's/...$//'`
+title=`cat metadata.tmp | grep citation_title | cut -c38- | sed 's/".*$//'`
 num_authors=`cat metadata.tmp | grep citation_author | wc -l`
-author=`cat metadata.tmp | grep -m1 citation_author | cut -c41- | sed 's/...$//'`
-doi=`cat metadata.tmp | grep citation_doi | cut -c37- | cut -d'"' -f2`
-year=`cat metadata.tmp | grep citation_date | cut -c39- | sed 's/.........$//'`
-id=`cat metadata.tmp | grep citation_pdf_url | cut -c64- | sed 's/...$//'`
+author=`cat metadata.tmp | grep -m1 citation_author | cut -c39- | sed 's/".*$//'`
+doi=`cat metadata.tmp | grep citation_doi | cut -c35- | cut -d'"' -f2 | grep -iv 'arxiv'`
+year=`cat metadata.tmp | grep citation_date | cut -c37- | sed 's/\/.*$//'`
+id=`cat metadata.tmp | grep citation_arxiv_id | cut -c41- | sed 's/".*$//'`
 url="https://arxiv.org/abs/${id}"
 
 # do some post-processing
