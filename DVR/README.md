@@ -45,7 +45,7 @@ Write an SDF to file:
 Delete a register from the current instance of DVR:
 `> delete phi;`
 
-Exit DVR
+Exit DVR:
 `> exit;`
 
 Filter out grid points, except for a specific region:
