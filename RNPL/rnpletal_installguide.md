@@ -19,7 +19,7 @@ sudo apt autoremove    # Removes any old packages that are no longer needed
 From the command line, install the following packages:
 
 ```
-sudo apt-get install gcc gfortran perl flex bison xutils-dev libx11-dev mesa-common-dev libglu1-mesa-dev mesa-utils libjpeg62 libjpeg62-dev libxext-dev libtiff-dev libtiff-opengl xfstt t1-xfree86-nonfree ttf-xfree86-nonfree ttf-xfree86-nonfree-syriac xfonts-75dpi xfonts-100dpi xfonts-100dpi-transcoded xfonts-75dpi-transcoded ffmpeg libxpm-dev libxpm4
+sudo apt install gcc gfortran perl flex bison xutils-dev libx11-dev mesa-common-dev libglu1-mesa-dev mesa-utils libjpeg62 libjpeg62-dev libxext-dev libtiff-dev libtiff-opengl xfstt t1-xfree86-nonfree ttf-xfree86-nonfree ttf-xfree86-nonfree-syriac xfonts-75dpi xfonts-100dpi xfonts-100dpi-transcoded xfonts-75dpi-transcoded ffmpeg libxpm-dev libxpm4
 ```
 
 ### 2. Set Environment Variables
@@ -72,7 +72,7 @@ Assuming you would like to install the software in `/usr/local`:
 
 ```
 sudo -i
-mkdir /usr/local/install/rnpletal
+mkdir -p /usr/local/install/rnpletal
 cd /usr/local/install/rnpletal
 wget ftp://laplace.physics.ubc.ca/pub/rnpletal/rnpletal.tar.gz
 tar zxf rnpletal.tar.gz
@@ -87,7 +87,7 @@ Assuming you are installing `xforms-1.0`:
 
 ```
 sudo -i
-mkdir /usr/local/install/xforms-1.0
+mkdir -p /usr/local/install/xforms-1.0
 cd /usr/local/install/xforms-1.0
 wget ftp://laplace.phas.ubc.ca/pub/xforms-1.0/xforms-1.0.tar.gz .
 tar zxf ./xforms-1.0.tar.gz
@@ -111,7 +111,7 @@ Download and install the software:
 
 ```
 sudo -i
-mkdir /usr/local/install/xvs
+mkdir -p /usr/local/install/xvs
 cd /usr/local/install/xvs
 wget ftp://laplace.physics.ubc.ca/pub/xvs/xvs.tar.gz
 tar zxf xvs.tar.gz
@@ -129,7 +129,7 @@ Download and install the software:
 
 ```
 sudo -i
-mkdir /usr/local/install/dv
+mkdir -p /usr/local/install/dv
 cd /usr/local/install/dv
 wget ftp://laplace.physics.ubc.ca/pub/DV/DV.tar.gz
 tar zxf DV.tar.gz
@@ -141,3 +141,4 @@ export LIB_PATHS="/usr/lib/x86_64-linux-gnu /usr/lib"
 make install 2>&1 | tee -a install.log
 ```
 
+### 8. Reboot
