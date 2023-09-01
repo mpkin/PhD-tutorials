@@ -18,7 +18,6 @@ tar zxf pamr.tar.gz
 ```
 
 You also need to set the proper environment variables. Source a file containing the following:
-
 ```
 # by default, this version uses the 2020 environment
 module load StdEnv/2020

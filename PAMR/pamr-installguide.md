@@ -17,10 +17,11 @@ sudo apt autoremove    # Removes any old packages that are no longer needed
 
 Install OpenMPI and dependencies from the command line:
 ```
-sudo apt install openmpi-bin
+sudo apt install openmpi-bin openmpi-common libopenmpi3 libopenmpi-dev
 ```
 
 ### 2. Install PAMR
+
 Proceed with installing the software to `/usr/local`:
 ```
 sudo -i
@@ -36,7 +37,7 @@ make
 
 ### 3. Test PAMR Installation
 
-To check that PAMR has been installed correctly you can try running the modified wave example:
+To check that PAMR has been installed correctly, you can try running the modified wave example:
 ```
 cd PhD-tutorials/PAMR/wave-local
 make; ./run.sh

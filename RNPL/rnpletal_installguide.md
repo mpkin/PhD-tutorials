@@ -53,7 +53,6 @@ export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/local/lib"
 export XVSHOST=$HOSTNAME
 export DVHOST=$HOSTNAME
 ```  
-
 You should log-out and log-in again to invoke these variables globally.
 
 ### 3. Install Helvetica Fonts
@@ -86,7 +85,7 @@ export F77=gfortran
 
 ### 5. Download and Install XForms
 
-Assuming you are installing `xforms-1.0`:
+Assuming you would like to install the software in `/usr/local`:
 
 ```
 sudo -i
@@ -101,7 +100,7 @@ make install 2>&1 | tee -a install.log
 
 ### 6. Download and Install XVS
 
-Download and install the software:
+Assuming you would like to install the software in `/usr/local`:
 
 ```
 sudo -i
@@ -119,7 +118,7 @@ make install 2>&1 | tee -a install.log
 
 ### 7. Download and Install DV
 
-Download and install the software:
+Assuming you would like to install the software in `/usr/local`:
 
 ```
 sudo -i
