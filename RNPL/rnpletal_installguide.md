@@ -19,7 +19,7 @@ sudo apt autoremove    # Removes any old packages that are no longer needed
 From the command line, install the following packages:
 
 ```
-sudo apt install gcc gfortran perl flex bison xutils-dev libx11-dev mesa-common-dev libglu1-mesa-dev mesa-utils libjpeg62 libjpeg62-dev libxext-dev libtiff-dev libtiff-opengl xfstt t1-xfree86-nonfree ttf-xfree86-nonfree ttf-xfree86-nonfree-syriac xfonts-75dpi xfonts-100dpi xfonts-100dpi-transcoded xfonts-75dpi-transcoded ffmpeg libxpm-dev libxpm4
+sudo apt install gcc gfortran perl flex bison xutils-dev libx11-dev mesa-common-dev libglu1-mesa-dev mesa-utils libjpeg62 libjpeg62-dev libxext-dev libtiff-dev libtiff-opengl t1-xfree86-nonfree ttf-xfree86-nonfree ttf-xfree86-nonfree-syriac xfonts-75dpi xfonts-100dpi xfonts-100dpi-transcoded xfonts-75dpi-transcoded ffmpeg libxpm-dev libxpm4
 ```
 
 ### 2. Set Environment Variables
@@ -61,7 +61,7 @@ The software needs Helvetica to display properly:
 cd /tmp
 wget http://laplace.physics.ubc.ca/Doc/rnpletal/Helvetica.ttf.gz
 gunzip Helvetica.ttf.gz 
-sudo mkdir /usr/share/fonts/truetype/myfonts
+sudo mkdir -p /usr/share/fonts/truetype/myfonts
 sudo mv Helvetica.ttf /usr/share/fonts/truetype/myfonts/.
 sudo fc-cache -f -v /usr/share/fonts/truetype/myfonts
 ```
