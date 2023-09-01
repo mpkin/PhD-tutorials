@@ -19,7 +19,8 @@ sudo apt autoremove    # Removes any old packages that are no longer needed
 From the command line, install the following packages:
 
 ```
-sudo apt install gcc gfortran perl flex bison xutils-dev libx11-dev mesa-common-dev libglu1-mesa-dev mesa-utils libjpeg62 libjpeg62-dev libxext-dev libtiff-dev libtiff-opengl t1-xfree86-nonfree ttf-xfree86-nonfree ttf-xfree86-nonfree-syriac xfonts-75dpi xfonts-100dpi xfonts-100dpi-transcoded xfonts-75dpi-transcoded ffmpeg libxpm-dev libxpm4
+sudo apt install gcc gfortran perl flex bison xutils-dev libx11-dev mesa-common-dev libglu1-mesa-dev mesa-utils libjpeg62 libjpeg62-dev libxext-dev t1-xfree86-nonfree ttf-xfree86-nonfree ttf-xfree86-nonfree-syriac xfonts-75dpi xfonts-100dpi xfonts-100dpi-transcoded xfonts-75dpi-transcoded ffmpeg libxpm-dev libxpm4
+sudo apt install libtiff-dev libtiff-opengl 
 ```
 
 ### 2. Set Environment Variables
@@ -53,6 +54,8 @@ export XVSHOST=$HOSTNAME
 export DVHOST=$HOSTNAME
 ```  
 
+You should log-out and log-in again to invoke these variables globally.
+
 ### 3. Install Helvetica Fonts
 
 The software needs Helvetica to display properly:
@@ -62,7 +65,7 @@ cd /tmp
 wget http://laplace.physics.ubc.ca/Doc/rnpletal/Helvetica.ttf.gz
 gunzip Helvetica.ttf.gz 
 sudo mkdir -p /usr/share/fonts/truetype/myfonts
-sudo mv Helvetica.ttf /usr/share/fonts/truetype/myfonts/.
+sudo mv Helvetica.ttf /usr/share/fonts/truetype/myfonts/
 sudo fc-cache -f -v /usr/share/fonts/truetype/myfonts
 ```
 
@@ -94,16 +97,7 @@ tar zxf ./xforms-1.0.tar.gz
 cd xforms-1.0
 xmkmf -a
 make install 2>&1 | tee -a install.log
-#ln -s /usr/lib/libforms.so /usr/lib/libforms.so.2
 ```
-
-Note that this may require modification of the `ar` command:
-
-```
-cp /usr/share/X11/config/Imake.tmpl /usr/share/X11/config/Imake.tmpl.O
-vi /usr/share/X11/config/Imake.tmpl
-```
-Then on line 1082 and 1084 of `Imake.tmpl`, change the `cq` and `clq` to `r`
 
 ### 6. Download and Install XVS
 
@@ -140,5 +134,4 @@ export LIB_PATHS="/usr/lib/x86_64-linux-gnu /usr/lib"
 ./configure --prefix=/usr/local 2>&1 | tee -a install.log
 make install 2>&1 | tee -a install.log
 ```
-
-### 8. Reboot
+then reboot.
