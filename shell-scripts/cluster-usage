@@ -27,10 +27,10 @@ user_percent=()
 padding="          "
 for (( i=3; i<=${num_users}+2; i++ ))
 do
-user_name[i]=`echo "${sshareP}" | sed -n ${i}p | cut -d '|' -f 2`
-user_percent[i]=`echo "${sshareP}" | sed -n ${i}p | cut -d '|' -f 7`
-user_pct=${user_percent[i]}
-printf "%s %s %s\n" "${user_name[i]}" "${padding:${#user_name[i]}}" "${user_percent[i]}"
+  user_name[i]=`echo "${sshareP}" | sed -n ${i}p | cut -d '|' -f 2`
+  user_percent[i]=`echo "${sshareP}" | sed -n ${i}p | cut -d '|' -f 7`
+  user_pct=${user_percent[i]}
+  printf "%s %s %s\n" "${user_name[i]}" "${padding:${#user_name[i]}}" "${user_percent[i]}"
 done
 
 printf "\n%s %s\n\n" "Group Fairshare:" "${group_percent}"

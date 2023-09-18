@@ -12,7 +12,7 @@ function cd
 }
 
 # find a filename containing a string in cwd & all subdirectories
-myfind() {
+function myfind() {
   err=0;
   if [ $# -ne 1 ]
   then
@@ -24,17 +24,17 @@ myfind() {
 }
 
 # find a file containing a string in cwd & all subdirectories
-myfindstring() {
+function myfindstring() {
   grep --color=always -RiHsn "$1" .
   }
 
 # locate file, but only within $HOME
-locateh() {
+function locateh() {
   locate $1 | grep $HOME
 }
 
 # take diff of files over SSH
-diffssh() {
+function diffssh() {
   case $# in
     3) ssh $1 "cat $2" | diff - $3;;
     *) echo " Syntax: diffssh user@remote_host remote_file.txt local_file.txt"; return 1;;
@@ -42,7 +42,7 @@ diffssh() {
 }
 
 # swap the names of two files
-swapnames() {
+function swapnames() {
   mv $1 $1.tmp
   mv $2 $1
   mv $1.tmp $2

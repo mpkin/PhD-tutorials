@@ -50,58 +50,58 @@ fi
 #       plot "data.dat" using 1:(2*\$2)
 # note: we escape underscores with \\\ to prevent subscripting
 case $# in
-      1) read -r -p "Line 1 legend title [$p1legendo]: " p1legend;
-         p1legend=${p1legend:-${p1legendo}};
-         p1legendt=$(echo "$p1legend" | sed -e 's/_/\\\\\\_/');
-         pltcmd="plot \"$1\" using 1:2 w lp ls 1 t \"$p1legendt\"" ;;
-      2) read -r -p "Line 1 legend title [$p1legendo]: " p1legend;
-         read -r -p "Line 1 legend title [$p2legendo]: " p2legend;
-         p1legend=${p1legend:-${p1legendo}};
-         p2legend=${p2legend:-${p2legendo}};
-         p1legendt=$(echo "$p1legend" | sed -e 's/_/\\\\\\_/');
-         p2legendt=$(echo "$p2legend" | sed -e 's/_/\\\\\\_/');
-         pltcmd="plot \"$1\" using 1:2 w lp ls 1 t \"$p1legendt\", \"$2\" using 1:2 w lp ls 2 t \"$p2legendt\"" ;;
-      3) read -r -p "Line 1 legend title [$p1legendo]: " p1legend;
-         read -r -p "Line 2 legend title [$p2legendo]: " p2legend;
-         read -r -p "Line 3 legend title [$p3legendo]: " p3legend;
-         p1legend=${p1legend:-${p1legendo}};
-         p2legend=${p2legend:-${p2legendo}};
-         p3legend=${p3legend:-${p3legendo}};
-         p1legendt=$(echo "$p1legend" | sed -e 's/_/\\\\\\_/');
-         p2legendt=$(echo "$p2legend" | sed -e 's/_/\\\\\\_/');
-         p3legendt=$(echo "$p3legend" | sed -e 's/_/\\\\\\_/');
-         pltcmd="plot \"$1\" using 1:2 w lp ls 1 t \"$p1legendt\", \"$2\" using 1:2 w lp ls 2 t \"$p2legendt\", \"$3\" using 1:2 w lp ls 3 t \"$p3legendt\"" ;;
-      4) read -r -p "Line 1 legend title [$p1legendo]: " p1legend;
-         read -r -p "Line 2 legend title [$p2legendo]: " p2legend;
-         read -r -p "Line 3 legend title [$p3legendo]: " p3legend;
-         read -r -p "Line 4 legend title [$p4legendo]: " p4legend;
-         p1legend=${p1legend:-${p1legendo}};
-         p2legend=${p2legend:-${p2legendo}};
-         p3legend=${p3legend:-${p3legendo}};
-         p4legend=${p4legend:-${p4legendo}};
-         p1legendt=$(echo "$p1legend" | sed -e 's/_/\\\\\\_/');
-         p2legendt=$(echo "$p2legend" | sed -e 's/_/\\\\\\_/');
-         p3legendt=$(echo "$p3legend" | sed -e 's/_/\\\\\\_/');
-         p4legendt=$(echo "$p4legend" | sed -e 's/_/\\\\\\_/');
-         pltcmd="plot \"$1\" using 1:2 w lp ls 1 t \"$p1legendt\", \"$2\" using 1:2 w lp ls 2 t \"$p2legendt\", \"$3\" using 1:2 w lp ls 3 t \"$p3legendt\", \"$4\" using 1:2 w lp ls 4 t \"$p4legendt\"" ;;
-      5) read -r -p "Line 1 legend title [$p1legendo]: " p1legend;
-         read -r -p "Line 2 legend title [$p2legendo]: " p2legend;
-         read -r -p "Line 3 legend title [$p3legendo]: " p3legend;
-         read -r -p "Line 4 legend title [$p4legendo]: " p4legend;
-         read -r -p "Line 5 legend title [$p5legendo]: " p5legend;
-         p1legend=${p1legend:-${p1legendo}};
-         p2legend=${p2legend:-${p2legendo}};
-         p3legend=${p3legend:-${p3legendo}};
-         p4legend=${p4legend:-${p4legendo}};
-         p5legend=${p5legend:-${p5legendo}};
-         p1legendt=$(echo "$p1legend" | sed -e 's/_/\\\\\\_/');
-         p2legendt=$(echo "$p2legend" | sed -e 's/_/\\\\\\_/');
-         p3legendt=$(echo "$p3legend" | sed -e 's/_/\\\\\\_/');
-         p4legendt=$(echo "$p4legend" | sed -e 's/_/\\\\\\_/');
-         p5legendt=$(echo "$p5legend" | sed -e 's/_/\\\\\\_/');
-         pltcmd="plot \"$1\" using 1:2 w lp ls 1 t \"$p1legendt\", \"$2\" using 1:2 w lp ls 2 t \"$p2legendt\", \"$3\" using 1:2 w lp ls 3 t \"$p3legendt\", \"$4\" using 1:2 w lp ls 4 t \"$p4legendt\", \"$5\" using 1:2 w lp ls 5 t \"$p5legendt\"" ;;
-      *) printf "$Usage" ;
-         exit 1;; 
+  1) read -r -p "Line 1 legend title [$p1legendo]: " p1legend;
+     p1legend=${p1legend:-${p1legendo}};
+     p1legendt=$(echo "$p1legend" | sed -e 's/_/\\\\\\_/');
+     pltcmd="plot \"$1\" using 1:2 w lp ls 1 t \"$p1legendt\"" ;;
+  2) read -r -p "Line 1 legend title [$p1legendo]: " p1legend;
+     read -r -p "Line 1 legend title [$p2legendo]: " p2legend;
+     p1legend=${p1legend:-${p1legendo}};
+     p2legend=${p2legend:-${p2legendo}};
+     p1legendt=$(echo "$p1legend" | sed -e 's/_/\\\\\\_/');
+     p2legendt=$(echo "$p2legend" | sed -e 's/_/\\\\\\_/');
+     pltcmd="plot \"$1\" using 1:2 w lp ls 1 t \"$p1legendt\", \"$2\" using 1:2 w lp ls 2 t \"$p2legendt\"" ;;
+  3) read -r -p "Line 1 legend title [$p1legendo]: " p1legend;
+     read -r -p "Line 2 legend title [$p2legendo]: " p2legend;
+     read -r -p "Line 3 legend title [$p3legendo]: " p3legend;
+     p1legend=${p1legend:-${p1legendo}};
+     p2legend=${p2legend:-${p2legendo}};
+     p3legend=${p3legend:-${p3legendo}};
+     p1legendt=$(echo "$p1legend" | sed -e 's/_/\\\\\\_/');
+     p2legendt=$(echo "$p2legend" | sed -e 's/_/\\\\\\_/');
+     p3legendt=$(echo "$p3legend" | sed -e 's/_/\\\\\\_/');
+     pltcmd="plot \"$1\" using 1:2 w lp ls 1 t \"$p1legendt\", \"$2\" using 1:2 w lp ls 2 t \"$p2legendt\", \"$3\" using 1:2 w lp ls 3 t \"$p3legendt\"" ;;
+  4) read -r -p "Line 1 legend title [$p1legendo]: " p1legend;
+     read -r -p "Line 2 legend title [$p2legendo]: " p2legend;
+     read -r -p "Line 3 legend title [$p3legendo]: " p3legend;
+     read -r -p "Line 4 legend title [$p4legendo]: " p4legend;
+     p1legend=${p1legend:-${p1legendo}};
+     p2legend=${p2legend:-${p2legendo}};
+     p3legend=${p3legend:-${p3legendo}};
+     p4legend=${p4legend:-${p4legendo}};
+     p1legendt=$(echo "$p1legend" | sed -e 's/_/\\\\\\_/');
+     p2legendt=$(echo "$p2legend" | sed -e 's/_/\\\\\\_/');
+     p3legendt=$(echo "$p3legend" | sed -e 's/_/\\\\\\_/');
+     p4legendt=$(echo "$p4legend" | sed -e 's/_/\\\\\\_/');
+     pltcmd="plot \"$1\" using 1:2 w lp ls 1 t \"$p1legendt\", \"$2\" using 1:2 w lp ls 2 t \"$p2legendt\", \"$3\" using 1:2 w lp ls 3 t \"$p3legendt\", \"$4\" using 1:2 w lp ls 4 t \"$p4legendt\"" ;;
+  5) read -r -p "Line 1 legend title [$p1legendo]: " p1legend;
+     read -r -p "Line 2 legend title [$p2legendo]: " p2legend;
+     read -r -p "Line 3 legend title [$p3legendo]: " p3legend;
+     read -r -p "Line 4 legend title [$p4legendo]: " p4legend;
+     read -r -p "Line 5 legend title [$p5legendo]: " p5legend;
+     p1legend=${p1legend:-${p1legendo}};
+     p2legend=${p2legend:-${p2legendo}};
+     p3legend=${p3legend:-${p3legendo}};
+     p4legend=${p4legend:-${p4legendo}};
+     p5legend=${p5legend:-${p5legendo}};
+     p1legendt=$(echo "$p1legend" | sed -e 's/_/\\\\\\_/');
+     p2legendt=$(echo "$p2legend" | sed -e 's/_/\\\\\\_/');
+     p3legendt=$(echo "$p3legend" | sed -e 's/_/\\\\\\_/');
+     p4legendt=$(echo "$p4legend" | sed -e 's/_/\\\\\\_/');
+     p5legendt=$(echo "$p5legend" | sed -e 's/_/\\\\\\_/');
+     pltcmd="plot \"$1\" using 1:2 w lp ls 1 t \"$p1legendt\", \"$2\" using 1:2 w lp ls 2 t \"$p2legendt\", \"$3\" using 1:2 w lp ls 3 t \"$p3legendt\", \"$4\" using 1:2 w lp ls 4 t \"$p4legendt\", \"$5\" using 1:2 w lp ls 5 t \"$p5legendt\"" ;;
+  *) printf "$Usage" ;
+     exit 1;; 
 esac
 
 read -r -p "Plot title/filename [$ptitleo]: " ptitle;
@@ -119,28 +119,28 @@ if [ -n "$ylabel" ]; then ylabelcmd="set ylabel \"$ylabel\""; fi
 
 read -r -p "Set y-axis range? (Y): " yrange
 case $yrange in
-      Y) read -r -p "Set y-min [$ymino]: " ymin;
-         ymin=${ymin:-${ymino}};
-         read -r -p "Set y-max [$ymaxo]: " ymax;
-         ymax=${ymax:-${ymaxo}};
-         yrangecmd="set yrange [$ymin:$ymax]";
-         sed -i "s/^ymino=.*/ymino=$ymin/" /tmp/mygnuplotd.tmp;
-         sed -i "s/^ymaxo=.*/ymaxo=$ymax/" /tmp/mygnuplotd.tmp;;
-      *) sed -i "s/^ymino=.*/ymino=/" /tmp/mygnuplotd.tmp;
-         sed -i "s/^ymaxo=.*/ymaxo=/" /tmp/mygnuplotd.tmp;;
+  Y) read -r -p "Set y-min [$ymino]: " ymin;
+     ymin=${ymin:-${ymino}};
+     read -r -p "Set y-max [$ymaxo]: " ymax;
+     ymax=${ymax:-${ymaxo}};
+     yrangecmd="set yrange [$ymin:$ymax]";
+     sed -i "s/^ymino=.*/ymino=$ymin/" /tmp/mygnuplotd.tmp;
+     sed -i "s/^ymaxo=.*/ymaxo=$ymax/" /tmp/mygnuplotd.tmp;;
+  *) sed -i "s/^ymino=.*/ymino=/" /tmp/mygnuplotd.tmp;
+     sed -i "s/^ymaxo=.*/ymaxo=/" /tmp/mygnuplotd.tmp;;
 esac
 
 read -r -p "Set x-axis range? (Y): " xrange
 case $xrange in
-      Y) read -r -p "Set x-min [$xmino]: " xmin;
-         xmin=${xmin:-${xmino}};
-         read -r -p "Set x-max [$xmaxo]: " xmax;
-         xmax=${xmax:-${xmaxo}};
-         xrangecmd="set xrange [$xmin:$xmax]";
-         sed -i "s/^xmino=.*/xmino=$xmin/" /tmp/mygnuplotd.tmp;
-         sed -i "s/^xmaxo=.*/xmaxo=$xmax/" /tmp/mygnuplotd.tmp;;
-      *) sed -i "s/^xmino=.*/xmino=/" /tmp/mygnuplotd.tmp;
-         sed -i "s/^xmaxo=.*/xmaxo=/" /tmp/mygnuplotd.tmp;;
+  Y) read -r -p "Set x-min [$xmino]: " xmin;
+     xmin=${xmin:-${xmino}};
+     read -r -p "Set x-max [$xmaxo]: " xmax;
+     xmax=${xmax:-${xmaxo}};
+     xrangecmd="set xrange [$xmin:$xmax]";
+     sed -i "s/^xmino=.*/xmino=$xmin/" /tmp/mygnuplotd.tmp;
+     sed -i "s/^xmaxo=.*/xmaxo=$xmax/" /tmp/mygnuplotd.tmp;;
+  *) sed -i "s/^xmino=.*/xmino=/" /tmp/mygnuplotd.tmp;
+     sed -i "s/^xmaxo=.*/xmaxo=/" /tmp/mygnuplotd.tmp;;
 esac
 
 gnuplot<<END
