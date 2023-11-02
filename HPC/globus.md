@@ -126,7 +126,7 @@ Globus also has a CLI implemented in Python. Here I will use Python's `venv` to 
     Task ID: 306900e0-dda1-11e6-9d11-22000a1e3b52
     ```
     
-    Check the storage space used on an endpoint (this may take a long time...)
+    Check the storage space used on an endpoint (this may take a long time):
     ```
     > globus ls ${ep1} --recursive-depth-limit 10 -r --jmespath 'DATA[?type==`file`].size' --format unix | tr '\t' '\n' | awk '{sum+=$1}END{print "Total space used = " sum/1024/1024/1024/1024 " TB"}'\n
     Total space used = 12 TB
