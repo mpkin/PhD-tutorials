@@ -45,7 +45,7 @@ Globus also has a CLI implemented in Python. Here I will use Python's `venv` to 
 **NOTE**: You will have to load the virtual environment every time you want to use the Globus CLI. If you don't like this, then just add the environment location to your path:
 ```
 > export PATH=$PATH:${GLOBUSPATH}/bin
-> echo 'export PATH=$PATH:${GLOBUSPATH}/bin'>>$HOME/.bashrc
+> echo 'export PATH=$PATH:${GLOBUSPATH}/bin' >> $HOME/.bashrc
 ```
 
 **NOTE**: virtual environments are not easily movable due to how they set up their paths. This means that you should be sure of where you want to setup your virtual environment before you do it
@@ -124,6 +124,12 @@ Globus also has a CLI implemented in Python. Here I will use Python's `venv` to 
     > globus transfer ${ep1}:~/test_dir ${ep2}:~/test_dir_recv --label "CLI Batch" --batch - < in.txt
     Message: The transfer has been accepted and a task has been created and queued for execution
     Task ID: 306900e0-dda1-11e6-9d11-22000a1e3b52
+    ```
+    
+    Check the storage space used on an endpoint (this may take a long time...)
+    ```
+    > globus ls ${ep1} --recursive-depth-limit 10 -r --jmespath 'DATA[?type==`file`].size' --format unix | tr '\t' '\n' | awk '{sum+=$1}END{print "Total space used = " sum/1024/1024/1024/1024 " TB"}'\n
+    Total space used = 12 TB
     ```
     
 For further features of Globus CLI, see here:
