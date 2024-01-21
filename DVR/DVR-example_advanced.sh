@@ -2,87 +2,129 @@
 
 # This script illustrates some of the advanced capabilities of DVR
 
-# Set the trap
+# processing parameters
+clev=1  # how many times should the data be coarsened? 0, 1, 2 or 3
+#t1=0   # start time for coarsened files
+#t2=65  # end time for coarsened files
+slice="cb=-25,25,-25,25,-25,25"  # slice data along x1,x2,y1,y2,z1,z2
+paramfile="evo.allparam"  # what is the name of the file containing all PAMR params?
+
+# set the trap
 ctrl_c()
 {
+  printf "\n    SIGINT: exiting...\n\n"
   dvrcomm "exit"
   exit 1
 }
 trap ctrl_c 2  #SIGINT
 
-# Set environment variables on the server (assumes default port 5006)
+# all relevant files are assumed to be in the current directory
+scriptdir=$PWD
+
+# offset script execution a random amount up to 120 seconds (to prevent port clash)
+sleep $((RANDOM % 120))
+
+# set environment variables for DVR execution
+printf "\n    Attempting to start DVR on ${HOSTNAME}...\n\n"
+count=`pgrep -x DVR | wc -l`  # count how many instances are running
+#DVRPORT=$((5006 + count))
+DVRPORT=$((54321 + count))  # hopefully unused
 DVRHOST=`hostname`
+export DVRPORT
 export DVRHOST
 DVR&
+sleep 10
+
+# check whether DVR process is indeed running
+pgrep DVR || ctrl_c
 sleep 2
- 
-# List number of cores and gridfunctions to be processed
-numcores=2
-gridfuncs="phi1 phi2"
-scriptdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-# How many times should the data be coarsened?
-clev=3
+# prepare a bunch of variables for naming/saving output
+pretag=`cat ${paramfile} | grep save_tag | awk -F'"' '{print $2}'`
+savelev=()
+if grep -q '^save_ivec '  ${paramfile}; then savelev+=(""); fi
+if grep -q '^save_ivec_3' ${paramfile}; then savelev+=("L3_"); fi
+if grep -q '^save_ivec_4' ${paramfile}; then savelev+=("L4_"); fi
+if grep -q '^save_ivec_5' ${paramfile}; then savelev+=("L5_"); fi
+gridfuncs=`cat ${paramfile} | grep "^save_2_vars" | awk -vRS="]" -vFS="[" '{print $2}' | sed 's/\"//g'`
 
-# If arguments provided, use those as the names of the gridfuncs to process
-if [ "$#" -ne 0 ]
-then
-  if [ "$#" -gt 9 ]
-  then
-   printf "\n    ERROR: max 9 arguments supported, but >= 10 supplied\n\n"
-   ctrl_c
-  fi
-  gridfuncs="$1 $2 $3 $4 $5 $6 $7 $8 $9"
-fi
+# attempt to count the number of cores used in the PAMR run
+dummygf=`echo ${gridfuncs} | cut -d" " -f1`
+numcores=`ls -1 *.sdf| awk -F_ '{print $NF}' | sed 's/\.sdf//' | sort -n | tail -n 1`
 
-# Set up script timer
-SECONDS=0
+# set up script timer
+seconds=0
 
-declare -a arr=($gridfuncs)
-for gridfunc in "${arr[@]}"
+declare -a gfarray=($gridfuncs)
+for gridfunc in "${gfarray[@]}"
 do
-  for (( i=0; i<numcores; i++ ))
+  for lev in "${savelev[@]}"
   do
-    sdfpath="'${scriptdir}/${gridfunc}_tl2_${i}.sdf'"
-    register="${gridfunc}_${i}"
-    echo "Processing $register..."
-# Uncomment for optional time filtering
-#    t1=0
-#    t2=200
-#    sdftodv -r -n ${register} -s -t ${t1} ${t2} ${sdfpath}
-#    sdfpath_save="'${scriptdir}/coarse_${register}_${t1}_${t2}.sdf'"
-    sdftodv -r -n ${register} -s ${sdfpath}
-    sdfpath_save="'${scriptdir}/coarse_${register}_all.sdf'"
-    sleep 0.5 
-# Uncomment for optional spatial filtering
-#    dvrcomm "filter = 'cb=0,12.5,-12.5,12.5'"
-    sleep 0.5
+    for (( i=0; i<numcores; i++ ))
+    do
+      sdfpath="'${scriptdir}/${pretag}${gridfunc}_tl2_${lev}${i}.sdf'"
+      register="${lev}${gridfunc}_${i}"
+      echo "Processing $register..."
+      if [[ -n ${t1} ]]; then
+        sdftodv -r -n ${register} -s -t ${t1} ${t2} ${sdfpath} || ctrl_c
+        sdfpath_save="'${scriptdir}/coarse_${register}_${t1}_${t2}.sdf'"
+      else
+        sdftodv -r -n ${register} -s ${sdfpath} || ctrl_c
+        sdfpath_save="'${scriptdir}/coarse_${register}_${lev}all.sdf'"
+      fi
+      sleep 0.5 
+      if [[ -n ${slice} ]]; then 
+        dvrcomm "filter = '${slice}'"  # only works if 'coarsen' is called later
+      fi
+      sleep 0.5
+      if [ "$clev" -eq 0 ]; then
+        # 'coarsen' not called here, so clev=0 only useful for time filtering
+        dvrcomm "save $register > $sdfpath_save"
+        sleep 0.2
+      elif [ "$clev" -eq 1 ]; then
         dvrcomm "c_$register = coarsen($register)"
         sleep 0.2
-           dvrcomm "c2_$register = coarsen(c_$register)"
-              sleep 0.2
-                  dvrcomm "c3_$register = coarsen(c2_$register)"
-                  sleep 0.2
-                  case $clev in 
-                    1) dvrcomm "save c_$register > $sdfpath_save";;
-                    2) dvrcomm "save c2_$register > $sdfpath_save";;
-                    3) dvrcomm "save c3_$register > $sdfpath_save";;
-                  esac
-                  sleep 0.2
-              dvrcomm "delete c3_$register"
-              sleep 0.2
-           dvrcomm "delete c2_$register"
-           sleep 0.2
+        dvrcomm "save c_$register > $sdfpath_save"
+        sleep 0.2
         dvrcomm "delete c_$register"
         sleep 0.2
-    dvrcomm "delete $register"
-    sleep 0.2
+      elif [ "$clev" -eq 2 ]; then
+        dvrcomm "c_$register = coarsen($register)"
+        sleep 0.2
+        dvrcomm "c2_$register = coarsen(c_$register)"
+        sleep 0.2
+        dvrcomm "save c2_$register > $sdfpath_save"
+        sleep 0.2
+        dvrcomm "delete c2_$register"
+        sleep 0.2
+        dvrcomm "delete c_$register"
+        sleep 0.2
+      elif [ "$clev" -eq 3 ]; then
+        dvrcomm "c_$register = coarsen($register)"
+        sleep 0.2
+        dvrcomm "c2_$register = coarsen(c_$register)"
+        sleep 0.2
+        dvrcomm "c3_$register = coarsen(c2_$register)"
+        sleep 0.2
+        dvrcomm "save c3_$register > $sdfpath_save"
+        sleep 0.2
+        dvrcomm "delete c3_$register"
+        sleep 0.2
+        dvrcomm "delete c2_$register"
+        sleep 0.2
+        dvrcomm "delete c_$register"
+        sleep 0.2
+      fi 
+      dvrcomm "delete $register"
+      sleep 0.2
+    done
   done
 done
 
-printf "\n DVR processing complete! \n"
-duration=${SECONDS}
+printf "\n DVR processing complete! \n ${dir}\n"
+duration=${seconds}
 echo "$(($duration / 60)) minutes, $(($duration % 60)) seconds"
 echo
 
-dvrcomm exit;
+printf "\n All processing complete! \n"
+dvrcomm exit
