@@ -1,4 +1,4 @@
-Installating RNPL et al on Ubuntu
+Installing RNPL et al on Ubuntu
 =================================
 
 This document serves as a guide to install RNPL, XVS, and DV on Ubuntu-based systems. The instructions here are a modified version of the (outdated?) guide found [here](http://laplace.physics.ubc.ca/Doc/rnpletal/rnpletal-ubuntu.html).

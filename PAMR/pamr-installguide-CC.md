@@ -1,4 +1,4 @@
-Installating PAMR on ComputeCanada Systems
+Installing PAMR on ComputeCanada Systems
 ==========================================
 
 This document serves as a guide to install PAMR on the ComputeCanada systems such as Graham and Cedar. In the following, I will make the assumptions:

@@ -18,21 +18,21 @@
 projects=("def-matt")
 
 for project in "${projects[@]}"; do
-  sshareP=`sshare -l -A ${project}_cpu -a --parsable`
-  num_users=`echo "${sshareP}" | wc -l`; num_users=$((num_users-2))
-  groupFS=`echo "${sshareP}" | sed -n 2p | cut -d '|' -f 9`
-  group_percent=`echo "scale=4 ; 1.0/${groupFS}" | bc | awk '{printf "%f", $0}'`
-  
-  user_name=()
-  user_percent=()
-  padding="          "
-  for (( i=3; i<=${num_users}+2; i++ ))
-  do
-    user_name[i]=`echo "${sshareP}" | sed -n ${i}p | cut -d '|' -f 2`
-    user_percent[i]=`echo "${sshareP}" | sed -n ${i}p | cut -d '|' -f 7`
-    user_pct=${user_percent[i]}
-    printf "%s %s %s\n" "${user_name[i]}" "${padding:${#user_name[i]}}" "${user_percent[i]}"
-  done
-  
-  printf "\n%s %s\n\n" "Group Fairshare:" "${group_percent}"
+	sshareP=$(sshare -l -A "${project}"_cpu -a --parsable)
+	num_users=$(echo "${sshareP}" | wc -l)
+	num_users=$((num_users - 2))
+	groupFS=$(echo "${sshareP}" | sed -n 2p | cut -d '|' -f 9)
+	group_percent=$(echo "scale=4 ; 1.0/${groupFS}" | bc | awk '{printf "%f", $0}')
+
+	user_name=()
+	user_percent=()
+	padding="          "
+	for ((i = 3; i <= "${num_users}" + 2; i++)); do
+		user_name[i]=$(echo "${sshareP}" | sed -n ${i}p | cut -d '|' -f 2)
+		user_percent[i]=$(echo "${sshareP}" | sed -n ${i}p | cut -d '|' -f 7)
+		user_pct=${user_percent[i]}
+		printf "%s %s %s\n" "${user_name[i]}" "${padding:${#user_name[i]}}" "${user_percent[i]}"
+	done
+
+	printf "\n%s %s\n\n" "Group Fairshare:" "${group_percent}"
 done

@@ -1,4 +1,4 @@
-Installating PAMR on Ubuntu
+Installing PAMR on Ubuntu
 ===========================
 
 This document serves as a guide to install PAMR on Ubuntu-based systems. In the following, I will assume that RNPL and all prerequisites have already been installed.
