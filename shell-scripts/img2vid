@@ -8,7 +8,7 @@
 # Run this script in the same directories as the jpegs. It is assumed
 # the jpegs have the DV default naming format: scr_save_%000d.jpeg
 #
-# NOTE: This script assumes you have properly installed libx264 and an
+# NOTE: this script assumes you have properly installed libx264 and an
 # updated version of ffmpeg. If not, you can still generate videos using
 # the following command:
 #

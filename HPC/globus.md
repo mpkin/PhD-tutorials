@@ -12,13 +12,13 @@ The Globus web app can be accessed at http://globus.computecanada.ca (or simply 
 
 **NOTE**: UBC ARC Sockeye has a collection called `ubcarc#sockeye`, but you should instead search for your specific collection (e.g. `Matt Choptuik's Shared Chinook Allocation`)
 
-**NOTE**: You may want to bookmark your oft-used endpoints, which can be done from the file manager
+**NOTE**: you may want to bookmark your oft-used endpoints, which can be done from the file manager
 
 2. Now in the file manager, click on the `Set Two Panels` button in the top right of the web app. A second panel should open up which will allow you to search for a second endpoint. For example, you could search for `cedar-dtn` if you wish to transfer between Graham and Cedar
 
 3. Now transfer data by navigating to the appropriate directories and using the GUI to select the desired folders. You can also create and delete folders as desired. When you are ready to transfer, select `Start` to begin transfer from the source to the destination
 
-**NOTE**: You can also look at `Transfer & Timer Options` to adjust various options of the transfer
+**NOTE**: you can also look at `Transfer & Timer Options` to adjust various options of the transfer
 
 4. Once the transfer request has been submitted, you can monitor the transfer in the
 `Activity` panel listed on the left of the page. At this point it is safe to close the web app. You should get an email when your transfer is complete
@@ -42,13 +42,13 @@ Globus also has a CLI implemented in Python. Here I will use Python's `venv` to 
     > pip install globus-cli
     ```
 
-**NOTE**: You will have to load the virtual environment every time you want to use the Globus CLI. If you don't like this, then just add the environment location to your path:
+**NOTE**: you will have to load the virtual environment every time you want to use the Globus CLI. If you don't like this, then just add the environment location to your path:
 ```
 > export PATH=$PATH:${GLOBUSPATH}/bin
 > echo 'export PATH=$PATH:${GLOBUSPATH}/bin' >> $HOME/.bashrc
 ```
 
-**NOTE**: virtual environments are not easily movable due to how they set up their paths. This means that you should be sure of where you want to setup your virtual environment before you do it
+**NOTE**: virtual environments are not easily movable due to how they set up their paths. This means that you should be sure of where you want to set up your virtual environment before you do it
 
 1. Log on to Globus and follow the instructions to authenticate the session:
     ```

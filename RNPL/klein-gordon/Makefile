@@ -14,7 +14,7 @@
 .IGNORE:
 
 ########################################################################
-#  NOTE: This Makefile uses the Bourne shell, 'sh'
+#  NOTE: this Makefile uses the Bourne shell, 'sh'
 ########################################################################
 SHELL = /bin/sh
 

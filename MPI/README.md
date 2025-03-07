@@ -86,7 +86,7 @@ To debug MPI programs running on many cores/nodes, it is useful to use dedicated
     You will be prompted to set a VNC password (do not leave this blank). Select `n` when asked about a view-only password. The password can be changed with `vncpasswd`. After starting the server, you will be pointed to a log file in `~/.vnc`. Look at this file to determine the hostname and port of the instance
 
 
-3. Setup an SSH tunnel to the VNC server
+3. Set up an SSH tunnel to the VNC server
 
    From your local machine, create an SSH tunnel to the compute node:
    ```

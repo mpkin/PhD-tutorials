@@ -6,7 +6,7 @@ Numerical Relativity Group](http://laplace.physics.ubc.ca).  Most of the
 necessary software can be downloaded from the group's [software
 page](http://laplace.physics.ubc.ca/Group/Software.html).
 
-* **DVR** -- the remote version of DV, a data visualization utility for 1D, 2D and 3D data
+* **DVR** -- the remote version of DV, a data visualization utility for 1D, 2D, and 3D data
 * **GRtensor** -- a tensor calculus package for the computer algebra system *Maple*
 * **HPC** -- various tutorials for using the UBC ARC and DRAC/Compute Canada HPC platforms
 * **MPI** -- a communication protocol for parallel programming in various languages
