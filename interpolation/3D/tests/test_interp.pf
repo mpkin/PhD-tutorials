@@ -1,0 +1,660 @@
+      @test
+      subroutine test_bounds1()
+      use funit
+      use interp_mod
+
+      implicit none
+
+      integer N
+      real*8 dx, dy, dz
+      real*8 xmin, xmax, ymin, ymax, zmin, zmax
+      real*8 x0, y0, z0
+
+      real*8, dimension(3) :: dummy
+      real*8 :: dummy1, dummy2, dummy3
+
+      N = 7
+      xmin = 0d0
+      xmax = 3d0
+      ymin = 0d0
+      ymax = 3d0
+      zmin = 0d0
+      zmax = 3d0
+      dx = (xmax-xmin)/real(N-1)
+      dy = (ymax-ymin)/real(N-1)
+      dz = (zmax-zmin)/real(N-1)
+
+      x0=0.4d0
+      y0=0.4d0
+      z0=0.4d0
+      dummy = bounds(dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0)
+      dummy1 = dummy(1)
+      dummy2 = dummy(2)
+      dummy3 = dummy(3)
+
+      @assertEqual(2d0, dummy1, tolerance=0.001)
+      @assertEqual(2d0, dummy2, tolerance=0.001)
+      @assertEqual(2d0, dummy3, tolerance=0.001)
+
+      x0=0.4d0
+      y0=1.7d0
+      z0=0.6d0
+      dummy = bounds(dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0)
+      dummy1 = dummy(1)
+      dummy2 = dummy(2)
+      dummy3 = dummy(3)
+
+      @assertEqual(2d0, dummy1, tolerance=0.001)
+      @assertEqual(3d0, dummy2, tolerance=0.001)
+      @assertEqual(2.5d0, dummy3, tolerance=0.001)
+
+      x0=2.99d0
+      y0=2.99d0
+      z0=2.99d0
+      dummy = bounds(dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0)
+      dummy1 = dummy(1)
+      dummy2 = dummy(2)
+      dummy3 = dummy(3)
+
+      @assertEqual(3d0, dummy1, tolerance=0.001)
+      @assertEqual(3d0, dummy2, tolerance=0.001)
+      @assertEqual(3d0, dummy3, tolerance=0.001)
+
+      end subroutine test_bounds1
+
+!#######################################################################
+
+      @test
+      subroutine test_bounds2()
+      use funit
+      use interp_mod
+
+      implicit none
+
+      integer N
+      real*8 dx, dy, dz
+      real*8 xmin, xmax, ymin, ymax, zmin, zmax
+      real*8 x0, y0, z0
+
+      real*8, dimension(3) :: dummy
+      real*8 :: dummy1, dummy2, dummy3
+
+      N = 7
+      xmin = 1d0
+      xmax = 3d0
+      ymin = 1d0
+      ymax = 3d0
+      zmin = 1d0
+      zmax = 3d0
+      dx = (xmax-xmin)/real(N-1)
+      dy = (ymax-ymin)/real(N-1)
+      dz = (zmax-zmin)/real(N-1)
+
+      x0=1.4d0
+      y0=1.4d0
+      z0=1.4d0
+      dummy = bounds(dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0)
+      dummy1 = dummy(1)
+      dummy2 = dummy(2)
+      dummy3 = dummy(3)
+
+      @assertEqual(2.666d0, dummy1, tolerance=0.001)
+      @assertEqual(2.666d0, dummy2, tolerance=0.001)
+      @assertEqual(2.666d0, dummy3, tolerance=0.001)
+
+      N = 7
+      xmin = -1d0
+      xmax = 3d0
+      ymin = -1d0
+      ymax = 3d0
+      zmin = -1d0
+      zmax = 3d0
+      dx = (xmax-xmin)/real(N-1)
+      dy = (ymax-ymin)/real(N-1)
+      dz = (zmax-zmin)/real(N-1)
+
+      x0=1.4d0
+      y0=1.4d0
+      z0=1.4d0
+      dummy = bounds(dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0)
+      dummy1 = dummy(1)
+      dummy2 = dummy(2)
+      dummy3 = dummy(3)
+
+      @assertEqual(3d0, dummy1, tolerance=0.001)
+      @assertEqual(3d0, dummy2, tolerance=0.001)
+      @assertEqual(3d0, dummy3, tolerance=0.001)
+
+      x0=-1d0
+      y0=-1d0
+      z0=-1d0
+      dummy = bounds(dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0)
+      dummy1 = dummy(1)
+      dummy2 = dummy(2)
+      dummy3 = dummy(3)
+
+      @assertEqual(1.666d0, dummy1, tolerance=0.001)
+      @assertEqual(1.666d0, dummy2, tolerance=0.001)
+      @assertEqual(1.666d0, dummy3, tolerance=0.001)
+
+      x0=-0.3d0
+      y0=-1d0
+      z0=1d0
+      dummy = bounds(dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0)
+      dummy1 = dummy(1)
+      dummy2 = dummy(2)
+      dummy3 = dummy(3)
+
+      @assertEqual(2.333d0, dummy1, tolerance=0.001)
+      @assertEqual(1.666d0, dummy2, tolerance=0.001)
+      @assertEqual(3d0, dummy3, tolerance=0.001)
+
+      end subroutine test_bounds2
+
+!#######################################################################
+
+      @test
+      subroutine test_boundsN1()
+      use funit
+      use interp_mod
+
+      implicit none
+
+      integer N
+      real*8 dx, dy, dz
+      real*8 xmin, xmax, ymin, ymax, zmin, zmax
+      real*8 x0, y0, z0
+      real*8, dimension(3) :: uppers
+
+      integer, dimension(3) :: dummy
+      integer :: dummy1, dummy2, dummy3
+
+      N = 7
+      xmin = 0d0
+      xmax = 3d0
+      ymin = 0d0
+      ymax = 3d0
+      zmin = 0d0
+      zmax = 3d0
+      dx = (xmax-xmin)/real(N-1)
+      dy = (ymax-ymin)/real(N-1)
+      dz = (zmax-zmin)/real(N-1)
+
+      x0=0.4d0
+      y0=0.4d0
+      z0=0.4d0
+      uppers = bounds(dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0)
+      dummy  = boundsN(dx, dy, dz, xmin, ymin, zmin, uppers)
+      dummy1 = dummy(1)
+      dummy2 = dummy(2)
+      dummy3 = dummy(3)
+
+      @assertEqual(5, dummy1)
+      @assertEqual(5, dummy2)
+      @assertEqual(5, dummy3)
+
+      x0=2.9d0
+      y0=2.4d0
+      z0=0.4d0
+      uppers = bounds(dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0)
+      dummy  = boundsN(dx, dy, dz, xmin, ymin, zmin, uppers)
+      dummy1 = dummy(1)
+      dummy2 = dummy(2)
+      dummy3 = dummy(3)
+
+      @assertEqual(7, dummy1)
+      @assertEqual(7, dummy2)
+      @assertEqual(5, dummy3)
+
+      end subroutine test_boundsN1
+
+!#######################################################################
+
+      @test
+      subroutine test_boundsN2()
+      use funit
+      use interp_mod
+
+      implicit none
+
+      integer N
+      real*8 dx, dy, dz
+      real*8 xmin, xmax, ymin, ymax, zmin, zmax
+      real*8 x0, y0, z0
+      real*8, dimension(3) :: uppers
+
+      integer, dimension(3) :: dummy
+      integer :: dummy1, dummy2, dummy3
+
+      N = 7
+      xmin = -1d0
+      xmax = 3d0
+      ymin = -1d0
+      ymax = 3d0
+      zmin = -1d0
+      zmax = 3d0
+      dx = (xmax-xmin)/real(N-1)
+      dy = (ymax-ymin)/real(N-1)
+      dz = (zmax-zmin)/real(N-1)
+
+      x0=-1d0
+      y0=-1d0
+      z0=-1d0
+      uppers = bounds(dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0)
+      dummy  = boundsN(dx, dy, dz, xmin, ymin, zmin, uppers)
+      dummy1 = dummy(1)
+      dummy2 = dummy(2)
+      dummy3 = dummy(3)
+
+      @assertEqual(5, dummy1)
+      @assertEqual(5, dummy2)
+      @assertEqual(5, dummy3)
+
+      x0=2.9d0
+      y0=0.0d0
+      z0=-0.4d0
+      uppers = bounds(dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0)
+      dummy  = boundsN(dx, dy, dz, xmin, ymin, zmin, uppers)
+      dummy1 = dummy(1)
+      dummy2 = dummy(2)
+      dummy3 = dummy(3)
+
+      @assertEqual(7, dummy1)
+      @assertEqual(6, dummy2)
+      @assertEqual(5, dummy3)
+
+      end subroutine test_boundsN2
+
+!#######################################################################
+
+      @test
+      subroutine test_xyinterp0()
+      use funit
+      use interp_mod
+
+      implicit none
+
+      integer N
+      real*8 dx, dy, dz
+      real*8 xmin, xmax, ymin, ymax, zmin, zmax
+      real*8 x0, y0, z0
+      real*8, dimension(3) :: uppers
+      integer, dimension(3) :: uppersN
+      real*8, dimension(:,:,:), allocatable :: f
+      real*8 x, y, z
+      integer zindex
+
+      integer i, j, k
+      real*8 :: dummy
+
+      N = 7
+      xmin = 0d0
+      xmax = 3d0
+      ymin = 0d0
+      ymax = 3d0
+      zmin = 0d0
+      zmax = 3d0
+      dx = (xmax-xmin)/real(N-1)
+      dy = (ymax-ymin)/real(N-1)
+      dz = (zmax-zmin)/real(N-1)
+
+      ! construct a 3D surface to interpolate
+      allocate(f(N, N, N))
+      do i = 1, N
+        do j = 1, N
+          do k = 1, N
+            x = xmin + real(i - 1) * dx
+            y = ymin + real(j - 1) * dy
+            z = zmin + real(k - 1) * dz
+            f(i,j,k) = exp(-(x-1.5)**2-(y-1.5)**2-(z-1.5)**2)
+          end do
+        end do
+      end do
+
+      x0=2.4d0
+      y0=2.4d0
+      z0=1.5d0
+      zindex = 4
+      uppers = bounds(dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0)
+      uppersN = boundsN(dx, dy, dz, xmin, ymin, zmin, uppers)
+      dummy = xyinterp(dx, dy, xmin, ymin, N, N, N, uppersN, f, zindex, x0, y0)
+
+      @assertEqual(0.1978986991, dummy, tolerance=0.01)
+
+      x0=0.1d0
+      y0=0.1d0
+      z0=1.5d0
+      zindex = 4
+      uppers = bounds(dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0)
+      uppersN = boundsN(dx, dy, dz, xmin, ymin, zmin, uppers)
+      dummy = xyinterp(dx, dy, xmin, ymin, N, N, N, uppersN, f, zindex, x0, y0)
+
+      @assertEqual(0.01984109474, dummy, tolerance=0.01)
+
+      x0=1.75d0
+      y0=0.55d0
+      zindex = 4
+      uppers = bounds(dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0)
+      uppersN = boundsN(dx, dy, dz, xmin, ymin, zmin, uppers)
+      dummy = xyinterp(dx, dy, xmin, ymin, N, N, N, uppersN, f, zindex, x0, y0)
+
+      @assertEqual(0.3809831997, dummy, tolerance=0.01)
+
+      end subroutine test_xyinterp0
+
+!#######################################################################
+
+      @test
+      subroutine test_xyinterp1()
+      use funit
+      use interp_mod
+
+      implicit none
+
+      integer N
+      real*8 dx, dy, dz
+      real*8 xmin, xmax, ymin, ymax, zmin, zmax
+      real*8 x0, y0, z0
+      real*8, dimension(3) :: uppers
+      integer, dimension(3) :: uppersN
+      real*8, dimension(:,:,:), allocatable :: f
+      real*8 x, y, z
+      integer zindex
+
+      integer i, j, k
+      integer, dimension(3) :: dummy
+      integer dummy1, dummy2, dummy3
+      real*8 :: dummyr
+      real*8, dimension(5) :: output, zvals
+
+      N = 7
+      xmin = 0d0
+      xmax = 3d0
+      ymin = 0d0
+      ymax = 3d0
+      zmin = 0d0
+      zmax = 3d0
+      dx = (xmax-xmin)/real(N-1)
+      dy = (ymax-ymin)/real(N-1)
+      dz = (zmax-zmin)/real(N-1)
+
+      ! construct a 3D surface to interpolate
+      allocate(f(N, N, N))
+      do i = 1, N
+        do j = 1, N
+          do k = 1, N
+            x = xmin + real(i - 1) * dx
+            y = ymin + real(j - 1) * dy
+            z = zmin + real(k - 1) * dz
+            f(i,j,k) = exp(-(x-1.5)**2-(y-1.5)**2-(z-1.5)**2)
+          end do
+        end do
+      end do
+
+      x0=0.4
+      y0=0.4
+      z0=0.4
+      uppers = bounds(dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0)
+      dummy  = boundsN(dx, dy, dz, xmin, ymin, zmin, uppers)
+      do i = dummy(3), dummy(3)-4, -1
+        output(i) = xyinterp(dx, dy, xmin, ymin, N, N, N, dummy, f, i, x0, y0)
+      end do
+      do k = dummy(3), dummy(3)-4, -1
+        zvals(k) = zmin + (k-1)*dz
+      end do
+
+      @assertEqual(0.02651618441, neville(zvals,output,z0), tolerance=0.025)
+
+      end subroutine test_xyinterp1
+
+!#######################################################################
+
+      @test
+      subroutine test_xyinterp2()
+      use funit
+      use interp_mod
+
+      implicit none
+
+      integer N
+      real*8 dx, dy, dz
+      real*8 xmin, xmax, ymin, ymax, zmin, zmax
+      real*8 x0, y0, z0
+      real*8, dimension(3) :: uppers
+      integer, dimension(3) :: uppersN
+      real*8, dimension(:,:,:), allocatable :: f
+      real*8 x, y, z
+
+      integer i, j, k
+      integer, dimension(3) :: dummy
+      integer dummy1, dummy2, dummy3
+      real*8, dimension(:), allocatable :: output, zvals
+
+      N = 9
+      xmin = 0d0
+      xmax = 3d0
+      ymin = 0d0
+      ymax = 3d0
+      zmin = 0d0
+      zmax = 3d0
+      dx = (xmax-xmin)/real(N-1)
+      dy = (ymax-ymin)/real(N-1)
+      dz = (zmax-zmin)/real(N-1)
+
+      ! construct a 3D surface to interpolate
+      allocate(f(N, N, N))
+      do i = 1, N
+        do j = 1, N
+          do k = 1, N
+            x = xmin + real(i - 1) * dx
+            y = ymin + real(j - 1) * dy
+            z = zmin + real(k - 1) * dz
+            f(i,j,k) = exp(-(x-1.5)**2-(y-1.5)**2-(z-1.5)**2)
+          end do
+        end do
+      end do
+
+      x0=0.4
+      y0=0.4
+      z0=0.4
+
+      uppers = bounds(dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0)
+      dummy  = boundsN(dx, dy, dz, xmin, ymin, zmin, uppers)
+
+      allocate(output(dummy(3)-4:dummy(3)))
+      allocate(zvals(dummy(3)-4:dummy(3)))
+
+      do i = dummy(3), dummy(3)-4, -1
+        output(i) = xyinterp(dx, dy, xmin, ymin, N, N, N, dummy, f, i, x0, y0)
+      end do
+      do k = dummy(3), dummy(3)-4, -1
+        zvals(k) = zmin + (k-1)*dz
+      end do
+
+      @assertEqual(0.02651618441, neville(zvals,output,z0), tolerance=0.025)
+
+      end subroutine test_xyinterp2
+
+!#######################################################################
+
+      @test
+      subroutine test_xyinterp3()
+      use funit
+      use interp_mod
+
+      implicit none
+
+      integer N
+      real*8 dx, dy, dz
+      real*8 xmin, xmax, ymin, ymax, zmin, zmax
+      real*8 x0, y0, z0
+      real*8, dimension(3) :: uppers
+      integer, dimension(3) :: uppersN
+      real*8, dimension(:,:,:), allocatable :: f
+      real*8 x, y, z
+
+      integer i, j, k
+      integer, dimension(3) :: dummy
+      integer dummy1, dummy2, dummy3
+      real*8, dimension(:), allocatable :: output, zvals
+
+      N = 65
+      xmin = 0d0
+      xmax = 8d0
+      ymin = 0d0
+      ymax = 8d0
+      zmin = 0d0
+      zmax = 8d0
+      dx = (xmax-xmin)/real(N-1)
+      dy = (ymax-ymin)/real(N-1)
+      dz = (zmax-zmin)/real(N-1)
+
+      ! construct a 3D surface to interpolate
+      allocate(f(N, N, N))
+      do i = 1, N
+        do j = 1, N
+          do k = 1, N
+            x = xmin + real(i - 1) * dx
+            y = ymin + real(j - 1) * dy
+            z = zmin + real(k - 1) * dz
+            f(i,j,k) = exp(-(x-5.5)**2-(y-5.5)**2-(z-5.5)**2)
+          end do
+        end do
+      end do
+
+      x0=5.345
+      y0=5.987
+      z0=5.555
+
+      uppers = bounds(dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0)
+      dummy  = boundsN(dx, dy, dz, xmin, ymin, zmin, uppers)
+
+      allocate(output(dummy(3)-4:dummy(3)))
+      allocate(zvals(dummy(3)-4:dummy(3)))
+
+      do i = dummy(3), dummy(3)-4, -1
+        output(i) = xyinterp(dx, dy, xmin, ymin, N, N, N, dummy, f, i, x0, y0)
+      end do
+      do k = dummy(3), dummy(3)-4, -1
+        zvals(k) = zmin + (k-1)*dz
+      end do
+
+      @assertEqual(0.7678053719, neville(zvals,output,z0), tolerance=0.01)
+
+      end subroutine test_xyinterp3
+
+!#######################################################################
+
+      @test
+      subroutine test_interpd1()
+      use funit
+      use interp_mod
+
+      implicit none
+
+      integer Nx, Ny, Nz
+      real*8 dx, dy, dz
+      real*8 xmin, xmax, ymin, ymax, zmin, zmax
+      real*8 x0, y0, z0
+      real*8 x, y, z
+      integer i, j, k
+      real*8, dimension(:,:,:), allocatable :: f
+      real*8 interpval
+
+      Nx = 65
+      Ny = 65
+      Nz = 65
+      xmin = 2d0
+      xmax = 8d0
+      ymin = 2d0
+      ymax = 8d0
+      zmin = 2d0
+      zmax = 8d0
+      dx = (xmax-xmin)/real(Nx-1)
+      dy = (ymax-ymin)/real(Ny-1)
+      dz = (zmax-zmin)/real(Nz-1)
+
+      ! construct a 3D surface to interpolate
+      allocate(f(Nx, Ny, Nz))
+      do i = 1, Nx
+        do j = 1, Ny
+          do k = 1, Nz
+            x = xmin + real(i - 1) * dx
+            y = ymin + real(j - 1) * dy
+            z = zmin + real(k - 1) * dz
+            f(i,j,k) = exp(-(x-5.5)**2-(y-5.5)**2-(z-5.5)**2)
+          end do
+        end do
+      end do
+
+      x0=5.345
+      y0=5.987
+      z0=5.555
+      interpval = interpd(Nx, Ny, Nz, dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0, f)
+      @assertEqual(0.7678053719, interpval, tolerance=0.001)
+
+      x0=2.19
+      y0=9.94
+      z0=5.44
+      interpval = interpd(Nx, Ny, Nz, dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0, f)
+      @assertEqual(4.782155097d-14, interpval, tolerance=0.001)
+
+      x0=6
+      y0=6
+      z0=6
+      interpval = interpd(Nx, Ny, Nz, dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0, f)
+      @assertEqual(0.4723665527, interpval, tolerance=0.001)
+
+      end subroutine test_interpd1
+
+!#######################################################################
+
+      @test
+      subroutine test_interpd2()
+      use funit
+      use interp_mod
+
+      implicit none
+
+      integer Nx, Ny, Nz
+      real*8 dx, dy, dz
+      real*8 xmin, xmax, ymin, ymax, zmin, zmax
+      real*8 x0, y0, z0
+      real*8 x, y, z
+      integer i, j, k
+      real*8, dimension(:,:,:), allocatable :: f
+      real*8 interpval
+
+      Nx = 1025
+      Ny = 1025
+      Nz = 1025
+      xmin = -4d0
+      xmax = 8d0
+      ymin = 2d0
+      ymax = 8d0
+      zmin = 0d0
+      zmax = 8d0
+      dx = (xmax-xmin)/real(Nx-1)
+      dy = (ymax-ymin)/real(Ny-1)
+      dz = (zmax-zmin)/real(Nz-1)
+
+      ! construct a 3D surface to interpolate
+      allocate(f(Nx, Ny, Nz))
+      do i = 1, Nx
+        do j = 1, Ny
+          do k = 1, Nz
+            x = xmin + real(i - 1) * dx
+            y = ymin + real(j - 1) * dy
+            z = zmin + real(k - 1) * dz
+            f(i,j,k) = sin(x*y*z)
+          end do
+        end do
+      end do
+
+      x0=5.345
+      y0=5.987
+      z0=5.555
+      interpval = interpd(Nx, Ny, Nz, dx, dy, dz, xmin, xmax, ymin, ymax, zmin, zmax, x0, y0, z0, f)
+      @assertEqual(0.965646652, interpval, tolerance=0.001)
+
+      end subroutine test_interpd2

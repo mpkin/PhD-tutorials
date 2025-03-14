@@ -7,3 +7,5 @@ https://github.com/Goddard-Fortran-Ecosystem/pFUnit
 
 Several demos can be found here:
 https://github.com/Goddard-Fortran-Ecosystem/pFUnit_demos
+
+On Ubuntu systems, you may need to install the `python-is-python3` package from the repos to get it working.

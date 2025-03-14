@@ -13,7 +13,6 @@ page](http://laplace.physics.ubc.ca/Group/Software.html).
 * **PAMR** -- a set of libraries for solving PDEs using parallel adaptive mesh refinement
 * **pFUnit** -- a unit testing framework for Fortran
 * **RNPL** -- a specialized language and compiler for solving PDEs with finite-differences
-* **elliptic** -- a basic implementation of several algorithms for solving elliptic PDEs  
-* **interpolation** -- a basic implementation of several interpolating algorithms for 1D and 2D data
+* **elliptic** -- a basic implementation of several algorithms for solving elliptic PDEs
+* **interpolation** -- a basic implementation of several interpolating algorithms for 1D, 2D, and 3D data
 * **shell-scripts** -- several utility scripts for various research tasks
- 

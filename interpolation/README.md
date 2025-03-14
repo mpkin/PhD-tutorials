@@ -4,7 +4,7 @@ The code in this directory implements several interpolating algorithms in Fortra
 
 * Neville's algorithm for 1D data
 * bicubic interpolation for 2D data
- 
+* Neville's algorithm for 3D data
 
 References:
 ```

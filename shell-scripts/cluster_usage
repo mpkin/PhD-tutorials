@@ -2,14 +2,14 @@
 
 #=======================================================================
 #
-# cluster-usage
+# cluster_usage
 #
 # Displays Slurm usage stats for users in a project. Assumes you only
 # care about CPU usage, not GPU. User values always add up to 1, and
 # group FairShare > 1 implies group usage exceeds the allocation.
 #
 # Note that on ComputeCanada systems, past usage is discounted with a
-# half-life of one week (i.e. usage more than a few weeks in the past
+# half-life of one week (i.e., usage more than a few weeks in the past
 # will have only a small impact on priority). Priority of jobs is
 # determined solely by the group FairShare level
 #
